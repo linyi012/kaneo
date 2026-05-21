@@ -1035,6 +1035,7 @@
 		"sidebar": {
 			"overview": "Overview",
 			"projects": "Projects",
+			"projectTemplates": "ProjectTemplate",
 			"members": "Members",
 			"invitations": "Invitations",
 			"more": "More",
@@ -1798,6 +1799,43 @@
 		},
 		"branding": {
 			"poweredBy": "Powered by"
+		}
+	},
+	"projectTemplate": {
+		"pageTitle": "Project Templates",
+		"empty": "No templates yet. Create one to define reusable project structures.",
+		"addTask": "Add template task",
+		"useTemplate": "Create project from template",
+		"deleteTemplate": "Delete template",
+		"createTemplate": {
+			"title": "Create template",
+			"namePlaceholder": "Template name",
+			"button": "New template"
+		},
+		"createTask": {
+			"title": "Add template task"
+		},
+		"createProject": {
+			"title": "Create project from {{name}}",
+			"taskCount": "{{count}} tasks will be copied",
+			"success": "Project created from template",
+			"error": "Failed to create project from template"
+		},
+		"deleteTemplateConfirm": {
+			"title": "Delete template?",
+			"description": "This will permanently delete the template and all its tasks."
+		},
+		"task": {
+			"editTitle": "Edit template task",
+			"saved": "Template task saved",
+			"title": "Title",
+			"description": "Description",
+			"status": "Status",
+			"priority": "Priority"
+		},
+		"actions": {
+			"create": "Create",
+			"save": "Save"
 		}
 	}
 }

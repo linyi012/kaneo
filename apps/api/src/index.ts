@@ -39,6 +39,7 @@ import oauth from "./oauth";
 import { initializePlugins } from "./plugins";
 import { migrateGitHubIntegration } from "./plugins/github/migration";
 import project from "./project";
+import projectTemplate from "./project-template";
 import { getPublicProject } from "./project/controllers/get-public-project";
 import { initializeScheduler, shutdownScheduler } from "./scheduler";
 import search from "./search";
@@ -465,6 +466,7 @@ export function createApp() {
   const oauthApi = api.route("/oauth", oauth);
 
   const projectApi = api.route("/project", project);
+  const projectTemplateApi = api.route("/project-template", projectTemplate);
   const taskApi = api.route("/task", task);
   const columnApi = api.route("/column", column);
   const activityApi = api.route("/activity", activity);
@@ -582,6 +584,7 @@ export function createApp() {
     notificationApi,
     notificationPreferencesApi,
     projectApi,
+    projectTemplateApi,
     publicProjectApi,
     searchApi,
     slackIntegrationApi,
@@ -686,6 +689,7 @@ const {
   notificationApi,
   notificationPreferencesApi,
   projectApi,
+  projectTemplateApi,
   publicProjectApi,
   searchApi,
   slackIntegrationApi,
@@ -709,6 +713,7 @@ if (isMainModule) {
 export type AppType =
   | typeof configApi
   | typeof projectApi
+  | typeof projectTemplateApi
   | typeof taskApi
   | typeof columnApi
   | typeof activityApi

@@ -347,6 +347,99 @@ export const taskReminderSentTable = pgTable(
   ],
 );
 
+export const projectTemplateTable = pgTable(
+  "project_template",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    description: text("description"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("project_template_workspaceId_idx").on(table.workspaceId)],
+);
+
+export const projectTemplateTaskTable = pgTable(
+  "project_template_task",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    templateId: text("template_id")
+      .notNull()
+      .references(() => projectTemplateTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    position: integer("position").default(0),
+    number: integer("number").default(1),
+    userId: text("assignee_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    title: text("title").notNull(),
+    description: text("description"),
+    status: text("status").notNull().default("to-do"),
+    priority: text("priority").default("low"),
+    startDate: timestamp("start_date", { mode: "date" }),
+    dueDate: timestamp("due_date", { mode: "date" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("project_template_task_templateId_idx").on(table.templateId),
+    unique("project_template_task_template_number_unique").on(
+      table.templateId,
+      table.number,
+    ),
+  ],
+);
+
+export const projectTemplateTaskLabelTable = pgTable(
+  "project_template_task_label",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    templateTaskId: text("template_task_id")
+      .notNull()
+      .references(() => projectTemplateTaskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    color: text("color").notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("project_template_task_label_templateTaskId_idx").on(
+      table.templateTaskId,
+    ),
+    unique("project_template_task_label_task_name_unique").on(
+      table.templateTaskId,
+      table.name,
+    ),
+  ],
+);
+
 export const timeEntryTable = pgTable("time_entry", {
   id: text("id")
     .$defaultFn(() => createId())

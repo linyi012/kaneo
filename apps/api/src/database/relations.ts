@@ -13,6 +13,9 @@ import {
   labelTable,
   notificationTable,
   projectTable,
+  projectTemplateTable,
+  projectTemplateTaskLabelTable,
+  projectTemplateTaskTable,
   sessionTable,
   taskRelationTable,
   taskReminderSentTable,
@@ -73,6 +76,7 @@ export const workspaceTableRelations = relations(
     teams: many(teamTable),
     members: many(workspaceUserTable),
     projects: many(projectTable),
+    projectTemplates: many(projectTemplateTable),
     assets: many(assetTable),
     invitations: many(invitationTable),
     notificationWorkspaceRules: many(userNotificationWorkspaceRuleTable),
@@ -129,6 +133,42 @@ export const workflowRuleTableRelations = relations(
     column: one(columnTable, {
       fields: [workflowRuleTable.columnId],
       references: [columnTable.id],
+    }),
+  }),
+);
+
+export const projectTemplateTableRelations = relations(
+  projectTemplateTable,
+  ({ one, many }) => ({
+    workspace: one(workspaceTable, {
+      fields: [projectTemplateTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    tasks: many(projectTemplateTaskTable),
+  }),
+);
+
+export const projectTemplateTaskTableRelations = relations(
+  projectTemplateTaskTable,
+  ({ one, many }) => ({
+    template: one(projectTemplateTable, {
+      fields: [projectTemplateTaskTable.templateId],
+      references: [projectTemplateTable.id],
+    }),
+    assignee: one(userTable, {
+      fields: [projectTemplateTaskTable.userId],
+      references: [userTable.id],
+    }),
+    labels: many(projectTemplateTaskLabelTable),
+  }),
+);
+
+export const projectTemplateTaskLabelTableRelations = relations(
+  projectTemplateTaskLabelTable,
+  ({ one }) => ({
+    templateTask: one(projectTemplateTaskTable, {
+      fields: [projectTemplateTaskLabelTable.templateTaskId],
+      references: [projectTemplateTaskTable.id],
     }),
   }),
 );
