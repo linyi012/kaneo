@@ -36,10 +36,7 @@ async function getTemplatesByWorkspace(workspaceId: string) {
         assigneeId: userTable.id,
       })
       .from(projectTemplateTaskTable)
-      .leftJoin(
-        userTable,
-        eq(projectTemplateTaskTable.userId, userTable.id),
-      )
+      .leftJoin(userTable, eq(projectTemplateTaskTable.userId, userTable.id))
       .where(eq(projectTemplateTaskTable.templateId, template.id))
       .orderBy(asc(projectTemplateTaskTable.position));
 

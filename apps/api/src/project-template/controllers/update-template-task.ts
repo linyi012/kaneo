@@ -36,8 +36,8 @@ async function updateTemplateTask(input: UpdateTemplateTaskInput) {
       status: input.status,
       priority: input.priority,
       userId: input.userId || null,
-        startDate: input.startDate ?? null,
-        dueDate: input.dueDate ?? null,
+      startDate: input.startDate ?? null,
+      dueDate: input.dueDate ?? null,
       position: input.position,
     })
     .where(eq(projectTemplateTaskTable.id, input.id))

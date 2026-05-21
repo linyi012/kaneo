@@ -61,9 +61,7 @@ async function createProjectFromTemplate({
 
   for (const templateTask of templateTasks) {
     const { status } = coerceStatus(templateTask.status, validStatuses);
-    const { priority } = coercePriority(
-      templateTask.priority ?? "no-priority",
-    );
+    const { priority } = coercePriority(templateTask.priority ?? "no-priority");
 
     const column = columns.find((c) => c.slug === status);
 
@@ -103,9 +101,7 @@ async function createProjectFromTemplate({
     const templateLabels = await db
       .select()
       .from(projectTemplateTaskLabelTable)
-      .where(
-        eq(projectTemplateTaskLabelTable.templateTaskId, templateTask.id),
-      );
+      .where(eq(projectTemplateTaskLabelTable.templateTaskId, templateTask.id));
 
     for (const label of templateLabels) {
       await db.insert(labelTable).values({

@@ -11,124 +11,124 @@ import { useUserPreferencesStore } from "@/store/user-preferences";
 import type { ProjectTemplateTask } from "@/types/project-template";
 
 type TemplateTaskRowProps = {
-	task: ProjectTemplateTask;
-	templateName: string;
-	workspaceId: string;
-	onClick: () => void;
+  task: ProjectTemplateTask;
+  templateName: string;
+  workspaceId: string;
+  onClick: () => void;
 };
 
 export default function TemplateTaskRow({
-	task,
-	templateName,
-	workspaceId,
-	onClick,
+  task,
+  templateName,
+  workspaceId,
+  onClick,
 }: TemplateTaskRowProps) {
-	const { t } = useTranslation();
-	const {
-		showAssignees,
-		showPriority,
-		showDueDates,
-		showLabels,
-		showTaskNumbers,
-	} = useUserPreferencesStore();
+  const { t } = useTranslation();
+  const {
+    showAssignees,
+    showPriority,
+    showDueDates,
+    showLabels,
+    showTaskNumbers,
+  } = useUserPreferencesStore();
 
-	const { data: workspaceUsers } = useGetActiveWorkspaceUsers(workspaceId);
+  const { data: workspaceUsers } = useGetActiveWorkspaceUsers(workspaceId);
 
-	const assignee = useMemo(() => {
-		return workspaceUsers?.members?.find(
-			(member) => member.userId === task.userId,
-		);
-	}, [workspaceUsers, task.userId]);
+  const assignee = useMemo(() => {
+    return workspaceUsers?.members?.find(
+      (member) => member.userId === task.userId,
+    );
+  }, [workspaceUsers, task.userId]);
 
-	const labelItems =
-		task.labels?.map((label) => ({
-			id: label.id,
-			name: label.name,
-			color: label.color,
-		})) ?? [];
+  const labelItems =
+    task.labels?.map((label) => ({
+      id: label.id,
+      name: label.name,
+      color: label.color,
+    })) ?? [];
 
-	return (
-		// biome-ignore lint/a11y/noStaticElementInteractions: row opens edit sheet
-		<div
-			onClick={onClick}
-			onKeyDown={(e) => {
-				if (e.key === "Enter") onClick();
-			}}
-			role="button"
-			tabIndex={0}
-			className={cn(
-				"group relative flex items-center gap-3 px-4 py-1.5 transition-colors cursor-pointer border-b border-border/50 hover:bg-accent/60",
-			)}
-		>
-			{showPriority && (
-				<div className="flex-shrink-0 first:[&_svg]:h-4 first:[&_svg]:w-4">
-					{getPriorityIcon(task.priority ?? "")}
-				</div>
-			)}
-			{showTaskNumbers && (
-				<div className="text-xs font-mono text-muted-foreground flex-shrink-0">
-					{templateName}-{task.number}
-				</div>
-			)}
+  return (
+    <>
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: false positive for onClick and onKeyDown */}
+      <div
+        onClick={onClick}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") onClick();
+        }}
+        className={cn(
+          "group relative flex items-center gap-3 px-4 py-1.5 transition-colors cursor-pointer border-b border-border/50 hover:bg-accent/60",
+        )}
+      >
+        {showPriority && (
+          <div className="flex-shrink-0 first:[&_svg]:h-4 first:[&_svg]:w-4">
+            {getPriorityIcon(task.priority ?? "")}
+          </div>
+        )}
+        {showTaskNumbers && (
+          <div className="text-xs font-mono text-muted-foreground flex-shrink-0">
+            {templateName}-{task.number}
+          </div>
+        )}
 
-			<div className="flex-1 min-w-0 flex items-center gap-2">
-				<span className="text-sm text-foreground truncate">{task.title}</span>
-				{showLabels && labelItems.length > 0 && (
-					<div className="flex items-center gap-1 ml-auto">
-						{labelItems.map((label) => (
-							<span
-								key={label.id}
-								className="text-[10px] px-1.5 py-0.5 rounded border border-border bg-sidebar text-muted-foreground"
-							>
-								{label.name}
-							</span>
-						))}
-					</div>
-				)}
-			</div>
+        <div className="flex-1 min-w-0 flex items-center gap-2">
+          <span className="text-sm text-foreground truncate">{task.title}</span>
+          {showLabels && labelItems.length > 0 && (
+            <div className="flex items-center gap-1 ml-auto">
+              {labelItems.map((label) => (
+                <span
+                  key={label.id}
+                  className="text-[10px] px-1.5 py-0.5 rounded border border-border bg-sidebar text-muted-foreground"
+                >
+                  {label.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
-			{showDueDates && task.dueDate && (
-				<div
-					className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded flex-shrink-0 ${dueDateStatusColors[getDueDateStatus(task.dueDate)]}`}
-				>
-					{getDueDateStatus(task.dueDate) === "overdue" && (
-						<CalendarX className="w-3 h-3" />
-					)}
-					{getDueDateStatus(task.dueDate) === "due-soon" && (
-						<CalendarClock className="w-3 h-3" />
-					)}
-					{(getDueDateStatus(task.dueDate) === "far-future" ||
-						getDueDateStatus(task.dueDate) === "no-due-date") && (
-						<Calendar className="w-3 h-3" />
-					)}
-					<span>{format(new Date(task.dueDate), "MMM d")}</span>
-				</div>
-			)}
+        {showDueDates && task.dueDate && (
+          <div
+            className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded flex-shrink-0 ${dueDateStatusColors[getDueDateStatus(task.dueDate)]}`}
+          >
+            {getDueDateStatus(task.dueDate) === "overdue" && (
+              <CalendarX className="w-3 h-3" />
+            )}
+            {getDueDateStatus(task.dueDate) === "due-soon" && (
+              <CalendarClock className="w-3 h-3" />
+            )}
+            {(getDueDateStatus(task.dueDate) === "far-future" ||
+              getDueDateStatus(task.dueDate) === "no-due-date") && (
+              <Calendar className="w-3 h-3" />
+            )}
+            <span>{format(new Date(task.dueDate), "MMM d")}</span>
+          </div>
+        )}
 
-			{showAssignees && (
-				<div className="flex-shrink-0">
-					{task.userId ? (
-						<Avatar className="h-6 w-6">
-							<AvatarImage
-								src={assignee?.user?.image ?? ""}
-								alt={assignee?.user?.name || ""}
-							/>
-							<AvatarFallback className="text-xs font-medium border border-border/30">
-								{assignee?.user?.name?.charAt(0).toUpperCase()}
-							</AvatarFallback>
-						</Avatar>
-					) : (
-						<div
-							className="w-6 h-6 rounded-full bg-muted border border-border flex items-center justify-center"
-							title={t("tasks:assignee.unassigned")}
-						>
-							<span className="text-[10px] font-medium text-muted-foreground">
-								?
-							</span>
-						</div>
-					)}
-				</div>
-			)}
-		</div>
-	);
+        {showAssignees && (
+          <div className="flex-shrink-0">
+            {task.userId ? (
+              <Avatar className="h-6 w-6">
+                <AvatarImage
+                  src={assignee?.user?.image ?? ""}
+                  alt={assignee?.user?.name || ""}
+                />
+                <AvatarFallback className="text-xs font-medium border border-border/30">
+                  {assignee?.user?.name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            ) : (
+              <div
+                className="w-6 h-6 rounded-full bg-muted border border-border flex items-center justify-center"
+                title={t("tasks:assignee.unassigned")}
+              >
+                <span className="text-[10px] font-medium text-muted-foreground">
+                  ?
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </>
+  );
 }

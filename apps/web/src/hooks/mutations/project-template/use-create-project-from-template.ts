@@ -3,14 +3,14 @@ import createProjectFromTemplate from "@/fetchers/project-template/create-projec
 import { toast } from "@/lib/toast";
 
 export function useCreateProjectFromTemplate() {
-	return useMutation({
-		mutationFn: createProjectFromTemplate,
-		onError: (error) => {
-			toast.error(
-				error instanceof Error
-					? error.message
-					: "Failed to create project from template",
-			);
-		},
-	});
+  return useMutation({
+    mutationFn: createProjectFromTemplate,
+    onError: (error) => {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create project from template",
+      );
+    },
+  });
 }
