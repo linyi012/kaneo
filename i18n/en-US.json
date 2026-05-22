@@ -1036,6 +1036,7 @@
 			"overview": "Overview",
 			"projects": "Projects",
 			"projectTemplates": "ProjectTemplate",
+			"rruleTasks": "RRuleTasks",
 			"members": "Members",
 			"invitations": "Invitations",
 			"more": "More",
@@ -1845,6 +1846,36 @@
 			"dueDays": "Due (days after project)",
 			"properties": "Properties",
 			"assignee": "Assignee"
+		},
+		"actions": {
+			"create": "Create",
+			"save": "Save"
+		}
+	},
+	"rruleTask": {
+		"pageTitle": "RRule Tasks",
+		"emptyProjects": "No projects in this workspace yet.",
+		"noTasksInProject": "No RRule tasks in this project.",
+		"addTask": "Add RRule task",
+		"createTask": {
+			"title": "Add RRule task"
+		},
+		"rrule": {
+			"label": "Recurrence rule (RRULE)",
+			"placeholder": "DTSTART:20260101T090000Z\nRRULE:FREQ=DAILY;INTERVAL=1"
+		},
+		"dueDays": {
+			"afterOccurrence": "+{{count}} days after trigger"
+		},
+		"task": {
+			"editTitle": "Edit RRule task",
+			"saved": "RRule task saved",
+			"title": "Title",
+			"description": "Description",
+			"status": "Status",
+			"priority": "Priority",
+			"properties": "Properties",
+			"nextRunAt": "Next run: {{date}}"
 		},
 		"actions": {
 			"create": "Create",

@@ -16,6 +16,8 @@ import {
   projectTemplateTable,
   projectTemplateTaskLabelTable,
   projectTemplateTaskTable,
+  rruleTaskLabelTable,
+  rruleTaskTable,
   sessionTable,
   taskRelationTable,
   taskReminderSentTable,
@@ -108,6 +110,7 @@ export const projectTableRelations = relations(
     assets: many(assetTable),
     columns: many(columnTable),
     workflowRules: many(workflowRuleTable),
+    rruleTasks: many(rruleTaskTable),
     githubIntegration: many(githubIntegrationTable),
     integrations: many(integrationTable),
     notificationWorkspaceProjects: many(userNotificationWorkspaceProjectTable),
@@ -169,6 +172,35 @@ export const projectTemplateTaskLabelTableRelations = relations(
     templateTask: one(projectTemplateTaskTable, {
       fields: [projectTemplateTaskLabelTable.templateTaskId],
       references: [projectTemplateTaskTable.id],
+    }),
+  }),
+);
+
+export const rruleTaskTableRelations = relations(
+  rruleTaskTable,
+  ({ one, many }) => ({
+    project: one(projectTable, {
+      fields: [rruleTaskTable.projectId],
+      references: [projectTable.id],
+    }),
+    assignee: one(userTable, {
+      fields: [rruleTaskTable.userId],
+      references: [userTable.id],
+    }),
+    createdBy: one(userTable, {
+      fields: [rruleTaskTable.createdByUserId],
+      references: [userTable.id],
+    }),
+    labels: many(rruleTaskLabelTable),
+  }),
+);
+
+export const rruleTaskLabelTableRelations = relations(
+  rruleTaskLabelTable,
+  ({ one }) => ({
+    rruleTask: one(rruleTaskTable, {
+      fields: [rruleTaskLabelTable.rruleTaskId],
+      references: [rruleTaskTable.id],
     }),
   }),
 );

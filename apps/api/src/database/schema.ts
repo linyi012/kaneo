@@ -409,6 +409,81 @@ export const projectTemplateTaskTable = pgTable(
   ],
 );
 
+export const rruleTaskTable = pgTable(
+  "rrule_task",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    position: integer("position").default(0),
+    number: integer("number").default(1),
+    userId: text("assignee_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdByUserId: text("created_by_user_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    title: text("title").notNull(),
+    description: text("description"),
+    status: text("status").notNull().default("to-do"),
+    priority: text("priority").default("low"),
+    startDate: timestamp("start_date", { mode: "date" }),
+    dueDaysOffset: integer("due_days_offset"),
+    rrule: text("rrule").notNull(),
+    nextRunAt: timestamp("next_run_at", { mode: "date" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("rrule_task_projectId_idx").on(table.projectId),
+    index("rrule_task_nextRunAt_idx").on(table.nextRunAt),
+    unique("rrule_task_project_number_unique").on(
+      table.projectId,
+      table.number,
+    ),
+  ],
+);
+
+export const rruleTaskLabelTable = pgTable(
+  "rrule_task_label",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    rruleTaskId: text("rrule_task_id")
+      .notNull()
+      .references(() => rruleTaskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    color: text("color").notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("rrule_task_label_rruleTaskId_idx").on(table.rruleTaskId),
+    unique("rrule_task_label_task_name_unique").on(
+      table.rruleTaskId,
+      table.name,
+    ),
+  ],
+);
+
 export const projectTemplateTaskLabelTable = pgTable(
   "project_template_task_label",
   {

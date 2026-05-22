@@ -41,7 +41,12 @@ import { migrateGitHubIntegration } from "./plugins/github/migration";
 import project from "./project";
 import { getPublicProject } from "./project/controllers/get-public-project";
 import projectTemplate from "./project-template";
+import rruleTask from "./rrule-task";
 import { initializeScheduler, shutdownScheduler } from "./scheduler";
+import {
+  rescheduleRRuleTasks,
+  shutdownRRuleTaskScheduler,
+} from "./scheduler/rrule-task-runner";
 import search from "./search";
 import slackIntegration from "./slack-integration";
 import { getPrivateObject } from "./storage/s3";
@@ -467,6 +472,7 @@ export function createApp() {
 
   const projectApi = api.route("/project", project);
   const projectTemplateApi = api.route("/project-template", projectTemplate);
+  const rruleTaskApi = api.route("/rrule-task", rruleTask);
   const taskApi = api.route("/task", task);
   const columnApi = api.route("/column", column);
   const activityApi = api.route("/activity", activity);
@@ -585,6 +591,7 @@ export function createApp() {
     notificationPreferencesApi,
     projectApi,
     projectTemplateApi,
+    rruleTaskApi,
     publicProjectApi,
     searchApi,
     slackIntegrationApi,
@@ -620,6 +627,7 @@ export async function runStartupTasks() {
 
   initializePlugins();
   initializeScheduler();
+  await rescheduleRRuleTasks();
   await initializeWebSocketAdapter();
 }
 
@@ -656,6 +664,7 @@ export async function startServer(
 
     console.log("🛑 Shutting down gracefully...");
     shutdownScheduler();
+    shutdownRRuleTaskScheduler();
     await shutdownWebSocketAdapter();
     server.close();
     process.exit(0);
@@ -690,6 +699,7 @@ const {
   notificationPreferencesApi,
   projectApi,
   projectTemplateApi,
+  rruleTaskApi,
   publicProjectApi,
   searchApi,
   slackIntegrationApi,
@@ -714,6 +724,7 @@ export type AppType =
   | typeof configApi
   | typeof projectApi
   | typeof projectTemplateApi
+  | typeof rruleTaskApi
   | typeof taskApi
   | typeof columnApi
   | typeof activityApi

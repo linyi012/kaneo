@@ -1,4 +1,5 @@
 import { HTTPException } from "hono/http-exception";
+import { resolveDueDateFromOffset } from "../shared/resolve-due-date";
 
 export const MAX_DUE_DAYS_OFFSET = 3650;
 
@@ -22,10 +23,5 @@ export function resolveTemplateTaskDueDate(
   projectBase: Date,
   dueDaysOffset: number | null | undefined,
 ): Date | null {
-  if (dueDaysOffset === null || dueDaysOffset === undefined) {
-    return null;
-  }
-  const result = new Date(projectBase);
-  result.setDate(result.getDate() + dueDaysOffset);
-  return result;
+  return resolveDueDateFromOffset(projectBase, dueDaysOffset);
 }
