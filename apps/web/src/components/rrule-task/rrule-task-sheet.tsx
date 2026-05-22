@@ -23,6 +23,7 @@ import { useRruleTask } from "@/hooks/queries/rrule-task/use-rrule-task";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
+import RRuleBuilder from "./rrule-builder";
 
 const TEMPLATE_STATUSES = [
   "to-do",
@@ -160,22 +161,11 @@ export default function RruleTaskSheet({
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label
-                  htmlFor="rrule-task-rrule"
-                  className="text-xs font-medium text-muted-foreground"
-                >
-                  {t("rruleTask:rrule.label")}
-                </Label>
-                <Textarea
-                  id="rrule-task-rrule"
-                  value={rrule}
-                  onChange={(e) => setRrule(e.target.value)}
-                  placeholder={t("rruleTask:rrule.placeholder")}
-                  rows={4}
-                  className="font-mono text-xs min-h-[80px] resize-y"
-                />
-              </div>
+              <RRuleBuilder
+                key={task.id}
+                value={rrule}
+                onRruleChange={setRrule}
+              />
 
               <div className="space-y-2">
                 <Label className="text-xs font-medium text-muted-foreground">

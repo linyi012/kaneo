@@ -1,2 +1,3 @@
-export const DEFAULT_RRULE =
-  "DTSTART:20260101T090000Z\nRRULE:FREQ=DAILY;INTERVAL=1";
+import { buildRruleString, defaultBuilderState } from "./rrule-builder-utils";
+
+export const DEFAULT_RRULE = buildRruleString(defaultBuilderState());

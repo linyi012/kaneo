@@ -15,7 +15,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -27,6 +26,7 @@ import { cn } from "@/lib/cn";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { DEFAULT_RRULE } from "./constants";
+import RRuleBuilder from "./rrule-builder";
 
 const PRIORITIES = ["no-priority", "low", "medium", "high", "urgent"] as const;
 
@@ -141,23 +141,7 @@ export default function CreateRruleTaskModal({
               className="min-h-[100px] resize-y"
             />
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="rrule-create"
-                className="text-xs font-medium text-muted-foreground"
-              >
-                {t("rruleTask:rrule.label")}
-              </Label>
-              <Textarea
-                id="rrule-create"
-                value={rrule}
-                onChange={(e) => setRrule(e.target.value)}
-                placeholder={t("rruleTask:rrule.placeholder")}
-                rows={3}
-                className="font-mono text-xs min-h-[72px] resize-y"
-                required
-              />
-            </div>
+            <RRuleBuilder value={rrule} onRruleChange={setRrule} />
 
             <TemplateTaskLabelsEditor
               workspaceId={workspaceId}
