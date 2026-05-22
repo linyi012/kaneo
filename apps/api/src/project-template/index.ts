@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import * as v from "valibot";
+import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createProjectFromTemplate from "./controllers/create-project-from-template";
 import createTemplate from "./controllers/create-template";
 import createTemplateTask from "./controllers/create-template-task";
@@ -14,6 +15,7 @@ import updateTemplateTask from "./controllers/update-template-task";
 const projectTemplate = new Hono<{
   Variables: {
     userId: string;
+    workspaceId: string;
   };
 }>()
   .get(
@@ -32,8 +34,9 @@ const projectTemplate = new Hono<{
       },
     }),
     validator("param", v.object({ workspaceId: v.string() })),
+    workspaceAccess.fromParam("workspaceId"),
     async (c) => {
-      const { workspaceId } = c.req.valid("param");
+      const workspaceId = c.get("workspaceId");
       const templates = await getTemplatesByWorkspace(workspaceId);
       return c.json(templates);
     },
@@ -61,8 +64,10 @@ const projectTemplate = new Hono<{
         description: v.optional(v.string()),
       }),
     ),
+    workspaceAccess.fromBody("workspaceId"),
     async (c) => {
-      const { workspaceId, name, description } = c.req.valid("json");
+      const { name, description } = c.req.valid("json");
+      const workspaceId = c.get("workspaceId");
       const template = await createTemplate(workspaceId, name, description);
       return c.json(template);
     },
@@ -90,10 +95,12 @@ const projectTemplate = new Hono<{
         description: v.optional(v.nullable(v.string())),
       }),
     ),
+    workspaceAccess.fromProjectTemplate("id"),
     async (c) => {
       const { id } = c.req.valid("param");
       const body = c.req.valid("json");
-      const template = await updateTemplate(id, body);
+      const workspaceId = c.get("workspaceId");
+      const template = await updateTemplate(id, workspaceId, body);
       return c.json(template);
     },
   )
@@ -113,9 +120,11 @@ const projectTemplate = new Hono<{
       },
     }),
     validator("param", v.object({ id: v.string() })),
+    workspaceAccess.fromProjectTemplate("id"),
     async (c) => {
       const { id } = c.req.valid("param");
-      const template = await deleteTemplate(id);
+      const workspaceId = c.get("workspaceId");
+      const template = await deleteTemplate(id, workspaceId);
       return c.json(template);
     },
   )
@@ -155,11 +164,14 @@ const projectTemplate = new Hono<{
         ),
       }),
     ),
+    workspaceAccess.fromProjectTemplate("templateId"),
     async (c) => {
       const { templateId } = c.req.valid("param");
       const body = c.req.valid("json");
+      const workspaceId = c.get("workspaceId");
       const task = await createTemplateTask({
         templateId,
+        workspaceId,
         title: body.title,
         description: body.description,
         status: body.status,
@@ -188,6 +200,7 @@ const projectTemplate = new Hono<{
       },
     }),
     validator("param", v.object({ taskId: v.string() })),
+    workspaceAccess.fromProjectTemplateTask("taskId"),
     async (c) => {
       const { taskId } = c.req.valid("param");
       const task = await getTemplateTask(taskId);
@@ -231,11 +244,14 @@ const projectTemplate = new Hono<{
         ),
       }),
     ),
+    workspaceAccess.fromProjectTemplateTask("taskId"),
     async (c) => {
       const { taskId } = c.req.valid("param");
       const body = c.req.valid("json");
+      const workspaceId = c.get("workspaceId");
       const task = await updateTemplateTask({
         id: taskId,
+        workspaceId,
         title: body.title,
         description: body.description,
         status: body.status,
@@ -265,9 +281,11 @@ const projectTemplate = new Hono<{
       },
     }),
     validator("param", v.object({ taskId: v.string() })),
+    workspaceAccess.fromProjectTemplateTask("taskId"),
     async (c) => {
       const { taskId } = c.req.valid("param");
-      const task = await deleteTemplateTask(taskId);
+      const workspaceId = c.get("workspaceId");
+      const task = await deleteTemplateTask(taskId, workspaceId);
       return c.json(task);
     },
   )
@@ -296,12 +314,14 @@ const projectTemplate = new Hono<{
         slug: v.string(),
       }),
     ),
+    workspaceAccess.fromBody("workspaceId"),
     async (c) => {
       const { templateId } = c.req.valid("param");
       const body = c.req.valid("json");
+      const workspaceId = c.get("workspaceId");
       const project = await createProjectFromTemplate({
         templateId,
-        workspaceId: body.workspaceId,
+        workspaceId,
         name: body.name,
         icon: body.icon,
         slug: body.slug,

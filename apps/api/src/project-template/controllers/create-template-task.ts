@@ -1,7 +1,8 @@
-import { eq, max } from "drizzle-orm";
+import { and, eq, max } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
+  projectTemplateTable,
   projectTemplateTaskLabelTable,
   projectTemplateTaskTable,
   userTable,
@@ -15,6 +16,7 @@ import getNextTemplateTaskNumber from "./get-next-template-task-number";
 
 type CreateTemplateTaskInput = {
   templateId: string;
+  workspaceId: string;
   title: string;
   description?: string;
   status?: string;
@@ -32,6 +34,21 @@ async function createTemplateTask(input: CreateTemplateTaskInput) {
   assertValidTemplateStatus(resolvedStatus);
   assertValidTemplatePriority(resolvedPriority);
   assertValidDueDaysOffset(input.dueDaysOffset);
+
+  const [template] = await db
+    .select({ id: projectTemplateTable.id })
+    .from(projectTemplateTable)
+    .where(
+      and(
+        eq(projectTemplateTable.id, input.templateId),
+        eq(projectTemplateTable.workspaceId, input.workspaceId),
+      ),
+    )
+    .limit(1);
+
+  if (!template) {
+    throw new HTTPException(404, { message: "Template not found" });
+  }
 
   const nextNumber = await getNextTemplateTaskNumber(input.templateId);
 

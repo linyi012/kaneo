@@ -1,12 +1,17 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTemplateTable } from "../../database/schema";
 
-async function deleteTemplate(id: string) {
+async function deleteTemplate(id: string, workspaceId: string) {
   const [deleted] = await db
     .delete(projectTemplateTable)
-    .where(eq(projectTemplateTable.id, id))
+    .where(
+      and(
+        eq(projectTemplateTable.id, id),
+        eq(projectTemplateTable.workspaceId, workspaceId),
+      ),
+    )
     .returning();
 
   if (!deleted) {

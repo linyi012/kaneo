@@ -1,10 +1,11 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTemplateTable } from "../../database/schema";
 
 async function updateTemplate(
   id: string,
+  workspaceId: string,
   data: { name?: string; description?: string | null },
 ) {
   const [updated] = await db
@@ -15,7 +16,12 @@ async function updateTemplate(
         ? { description: data.description }
         : {}),
     })
-    .where(eq(projectTemplateTable.id, id))
+    .where(
+      and(
+        eq(projectTemplateTable.id, id),
+        eq(projectTemplateTable.workspaceId, workspaceId),
+      ),
+    )
     .returning();
 
   if (!updated) {

@@ -18,7 +18,9 @@ type WorkspaceIdSource =
         | "activity"
         | "comment"
         | "column"
-        | "workflowRule";
+        | "workflowRule"
+        | "projectTemplate"
+        | "projectTemplateTask";
       idKey: string;
     };
 
@@ -99,7 +101,9 @@ async function lookupWorkspaceId(
     | "activity"
     | "comment"
     | "column"
-    | "workflowRule",
+    | "workflowRule"
+    | "projectTemplate"
+    | "projectTemplateTask",
   id: string,
 ): Promise<string | null> {
   try {
@@ -224,6 +228,33 @@ async function lookupWorkspaceId(
         return workflowRule?.workspaceId || null;
       }
 
+      case "projectTemplate": {
+        const [template] = await db
+          .select({ workspaceId: schema.projectTemplateTable.workspaceId })
+          .from(schema.projectTemplateTable)
+          .where(eq(schema.projectTemplateTable.id, id))
+          .limit(1);
+        return template?.workspaceId || null;
+      }
+
+      case "projectTemplateTask": {
+        const [templateTask] = await db
+          .select({
+            workspaceId: schema.projectTemplateTable.workspaceId,
+          })
+          .from(schema.projectTemplateTaskTable)
+          .innerJoin(
+            schema.projectTemplateTable,
+            eq(
+              schema.projectTemplateTaskTable.templateId,
+              schema.projectTemplateTable.id,
+            ),
+          )
+          .where(eq(schema.projectTemplateTaskTable.id, id))
+          .limit(1);
+        return templateTask?.workspaceId || null;
+      }
+
       default:
         return null;
     }
@@ -311,6 +342,22 @@ export const workspaceAccess = {
     workspaceAccessMiddleware({
       sources: [
         { type: "lookup", resource: "workflowRule", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  fromProjectTemplate: (idKey = "id") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "projectTemplate", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  fromProjectTemplateTask: (idKey = "taskId") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "projectTemplateTask", idKey },
         { type: "query", key: "workspaceId" },
       ],
     }),

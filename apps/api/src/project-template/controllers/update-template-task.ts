@@ -1,7 +1,8 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
+  projectTemplateTable,
   projectTemplateTaskLabelTable,
   projectTemplateTaskTable,
   userTable,
@@ -14,6 +15,7 @@ import {
 
 type UpdateTemplateTaskInput = {
   id: string;
+  workspaceId: string;
   title: string;
   description: string;
   status: string;
@@ -29,6 +31,25 @@ async function updateTemplateTask(input: UpdateTemplateTaskInput) {
   assertValidTemplateStatus(input.status);
   assertValidTemplatePriority(input.priority);
   assertValidDueDaysOffset(input.dueDaysOffset);
+
+  const [existingTask] = await db
+    .select({ id: projectTemplateTaskTable.id })
+    .from(projectTemplateTaskTable)
+    .innerJoin(
+      projectTemplateTable,
+      eq(projectTemplateTaskTable.templateId, projectTemplateTable.id),
+    )
+    .where(
+      and(
+        eq(projectTemplateTaskTable.id, input.id),
+        eq(projectTemplateTable.workspaceId, input.workspaceId),
+      ),
+    )
+    .limit(1);
+
+  if (!existingTask) {
+    throw new HTTPException(404, { message: "Template task not found" });
+  }
 
   const [updatedTask] = await db
     .update(projectTemplateTaskTable)
