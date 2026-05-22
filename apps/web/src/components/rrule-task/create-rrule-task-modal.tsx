@@ -1,5 +1,6 @@
+import { parseWorkspaceRruleSchedule } from "@kaneo/libs";
 import { Check } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TemplateDueDaysPopover from "@/components/project-template/template-due-days-popover";
 import TemplateTaskAssigneePopover from "@/components/project-template/template-task-assignee-popover";
@@ -22,10 +23,11 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateRruleTask } from "@/hooks/mutations/rrule-task/use-create-rrule-task";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
-import { DEFAULT_RRULE } from "./constants";
+import { getDefaultRrule } from "./constants";
 import RRuleBuilder from "./rrule-builder";
 
 const PRIORITIES = ["no-priority", "low", "medium", "high", "urgent"] as const;
@@ -46,13 +48,23 @@ export default function CreateRruleTaskModal({
   onClose,
 }: CreateRruleTaskModalProps) {
   const { t } = useTranslation();
+  const { data: organizations } = authClient.useListOrganizations();
+  const schedule = useMemo(
+    () =>
+      parseWorkspaceRruleSchedule(
+        organizations?.find((organization) => organization.id === workspaceId),
+      ),
+    [organizations, workspaceId],
+  );
+  const defaultRrule = useMemo(() => getDefaultRrule(schedule), [schedule]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("to-do");
   const [priority, setPriority] = useState<Priority>("no-priority");
   const [assigneeId, setAssigneeId] = useState("");
   const [dueDaysOffset, setDueDaysOffset] = useState<number | null>(null);
-  const [rrule, setRrule] = useState(DEFAULT_RRULE);
+  const [rrule, setRrule] = useState(defaultRrule);
   const [labels, setLabels] = useState<TemplateTaskLabel[]>([]);
 
   const { mutateAsync: createTask, isPending } =
@@ -70,6 +82,11 @@ export default function CreateRruleTaskModal({
   const selectedPriority = priorityOptions.find((p) => p.value === priority);
   const statusLabel = t(`tasks:status.${status}`, { defaultValue: status });
 
+  useEffect(() => {
+    if (!open) return;
+    setRrule(defaultRrule);
+  }, [open, defaultRrule]);
+
   const resetForm = () => {
     setTitle("");
     setDescription("");
@@ -77,7 +94,7 @@ export default function CreateRruleTaskModal({
     setPriority("no-priority");
     setAssigneeId("");
     setDueDaysOffset(null);
-    setRrule(DEFAULT_RRULE);
+    setRrule(defaultRrule);
     setLabels([]);
   };
 
@@ -141,7 +158,11 @@ export default function CreateRruleTaskModal({
               className="min-h-[100px] resize-y"
             />
 
-            <RRuleBuilder value={rrule} onRruleChange={setRrule} />
+            <RRuleBuilder
+              value={rrule}
+              onRruleChange={setRrule}
+              schedule={schedule}
+            />
 
             <TemplateTaskLabelsEditor
               workspaceId={workspaceId}

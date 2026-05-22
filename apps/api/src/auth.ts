@@ -243,6 +243,21 @@ export const auth = betterAuth({
               input: true,
               required: false,
             },
+            rruleTimezone: {
+              type: "string",
+              input: true,
+              required: false,
+            },
+            rruleRunAtHour: {
+              type: "number",
+              input: true,
+              required: false,
+            },
+            rruleRunAtMinute: {
+              type: "number",
+              input: true,
+              required: false,
+            },
           },
         },
         member: {

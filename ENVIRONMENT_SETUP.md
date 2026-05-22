@@ -108,14 +108,20 @@ For a complete list of all environment variables, their descriptions, and config
      ```
      CORS_ORIGINS=http://localhost:5173,https://yourdomain.com
      ```
-   - For development, you can leave `CORS_ORIGINS` empty to allow all origins
+   - For development, you can leave `CORS_ORIGINS` empty to allow all origins **only if `KANEO_CLIENT_URL` is also unset**; if `KANEO_CLIENT_URL` is set (e.g. to `http://localhost:5173`), the API uses it as the CORS allowlist when `CORS_ORIGINS` is empty
    - **Note:** `CORS_ORIGINS` should match `KANEO_CLIENT_URL` for proper authentication
 
-3. **Check Protocol Consistency:**
+3. **LAN access from other devices (`pnpm dev`):**
+   - Set `KANEO_CLIENT_URL`, `KANEO_API_URL`, and `CORS_ORIGINS` to your machine's LAN IP in the **root** `.env` and in **`apps/api/.env`** if that file exists (dotenv-mono loads the API package `.env` first and it overrides the root file)
+   - Set `VITE_API_URL` in `apps/web/.env.local` to the **Vite dev URL** (same host/port as the web app, e.g. `http://192.168.1.100:5173`), not `:1337`. Vite proxies `/api` to the API so login cookies work across ports
+   - Open the app at `http://<LAN-IP>:5173` on other devices; allow inbound TCP **5173** and **1337** in the host firewall (Windows may require an elevated PowerShell)
+   - If login succeeds but you are redirected back to sign-in, confirm `VITE_API_URL` uses port **5173**, not **1337**
+
+4. **Check Protocol Consistency:**
    - Ensure both frontend and API use the same protocol (http/https)
    - Don't mix http and https in development
 
-4. **Verify Server Accessibility:**
+5. **Verify Server Accessibility:**
    - Test if the API is accessible: `curl http://localhost:1337/config`
    - Check if the server is running on the correct port
 

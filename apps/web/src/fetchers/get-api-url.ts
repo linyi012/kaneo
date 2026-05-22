@@ -1,7 +1,7 @@
+import { getApiOrigin } from "@/lib/api-origin";
+
 export function getApiUrl(path: string) {
-  const trimmedBase = (
-    import.meta.env.VITE_API_URL || "http://localhost:1337"
-  ).replace(/\/+$/, "");
+  const trimmedBase = getApiOrigin().replace(/\/+$/, "");
   const apiUrl = trimmedBase.endsWith("/api")
     ? trimmedBase
     : `${trimmedBase}/api`;

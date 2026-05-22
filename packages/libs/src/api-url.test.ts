@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { resolveApiBaseUrl } from "./api-url";
+import { resolveApiBaseUrl, resolveViteApiOrigin } from "./api-url";
+
+describe("resolveViteApiOrigin", () => {
+  it("strips a trailing /api segment", () => {
+    expect(resolveViteApiOrigin("http://localhost:5173/api")).toBe(
+      "http://localhost:5173",
+    );
+  });
+});
 
 describe("resolveApiBaseUrl", () => {
   it("appends /api when the base has no api suffix", () => {

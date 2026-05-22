@@ -1,12 +1,11 @@
 import { windowId } from "@kaneo/libs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
+import { getApiOrigin } from "@/lib/api-origin";
 import { authClient } from "@/lib/auth-client";
 
 function getWsUrl(projectId: string) {
-  const base = (
-    import.meta.env.VITE_API_URL || "http://localhost:1337"
-  ).replace(/\/+$/, "");
+  const base = getApiOrigin().replace(/\/+$/, "");
   const wsBase = base.replace(/^http/, "ws");
   return `${wsBase}/api/ws/${encodeURIComponent(projectId)}?windowId=${encodeURIComponent(windowId)}`;
 }

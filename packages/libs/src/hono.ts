@@ -4,7 +4,7 @@ import type { AppType } from "@kaneo/api";
 import { hc } from "hono/client";
 import { resolveApiBaseUrl } from "./api-url";
 
-const apiUrl = resolveApiBaseUrl(import.meta.env.VITE_API_URL);
+const apiUrl = resolveApiBaseUrl(import.meta.env.VITE_API_URL as string | undefined);
 
 // Generate once per tab load
 export const windowId = Math.random().toString(36).substring(2, 11);

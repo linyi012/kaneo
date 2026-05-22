@@ -23,6 +23,14 @@ export default defineConfig({
     host: true,
     hmr: true,
     port: 5173,
+    // Same-origin /api in dev so auth cookies work (5173 vs 1337 are cross-origin).
+    proxy: {
+      "/api": {
+        target: process.env.VITE_DEV_API_PROXY_TARGET ?? "http://127.0.0.1:1337",
+        changeOrigin: true,
+        ws: true,
+      },
+    },
   },
   optimizeDeps: {
     exclude: ["better-auth"],

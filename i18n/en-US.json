@@ -544,6 +544,29 @@
 				"nameShort": "Workspace name must be at least 2 characters"
 			}
 		},
+		"workspaceRruleSchedule": {
+			"pageTitle": "RRule Task Schedule",
+			"sidebarTitle": "RRule schedule",
+			"title": "RRule Task Schedule",
+			"subtitle": "Set the timezone and daily run time used as defaults when creating recurring tasks.",
+			"scopeNote": "Changes apply only to new or edited RRule tasks. Existing schedules are not modified.",
+			"timezoneLabel": "Timezone",
+			"timezoneHint": "IANA timezone for recurring task run times",
+			"timezoneSearchPlaceholder": "Search by city or country (e.g. Kenya, Nairobi)…",
+			"timezoneNoResults": "No matching timezones. Try Kenya, Nairobi, or Africa/Nairobi.",
+			"runAtLabel": "Daily run time",
+			"runAtHint": "Local wall-clock time in the selected timezone",
+			"save": "Save",
+			"saving": "Saving…",
+			"readOnlyNote": "Only workspace owners and admins can change these settings.",
+			"toastUpdated": "RRule schedule settings saved",
+			"toastUpdateError": "Failed to save RRule schedule settings",
+			"validation": {
+				"timezoneInvalid": "Invalid timezone",
+				"hourInvalid": "Hour must be between 0 and 23",
+				"minuteInvalid": "Minute must be between 0 and 59"
+			}
+		},
 		"projectGeneral": {
 			"pageTitle": "Project Settings",
 			"title": "General Settings",

@@ -9,6 +9,9 @@ type UpdateWorkspaceRequest = {
   slug?: string;
   logo?: string;
   metadata?: Record<string, unknown>;
+  rruleTimezone?: string;
+  rruleRunAtHour?: number;
+  rruleRunAtMinute?: number;
 };
 
 function useUpdateWorkspace() {
@@ -20,6 +23,9 @@ function useUpdateWorkspace() {
       slug,
       logo,
       metadata,
+      rruleTimezone,
+      rruleRunAtHour,
+      rruleRunAtMinute,
     }: UpdateWorkspaceRequest) => {
       const updateData: {
         name?: string;
@@ -27,6 +33,9 @@ function useUpdateWorkspace() {
         slug?: string;
         logo?: string;
         metadata?: Record<string, unknown>;
+        rruleTimezone?: string;
+        rruleRunAtHour?: number;
+        rruleRunAtMinute?: number;
       } = {};
 
       if (name !== undefined) {
@@ -50,6 +59,18 @@ function useUpdateWorkspace() {
 
       if (metadata !== undefined) {
         updateData.metadata = metadata;
+      }
+
+      if (rruleTimezone !== undefined) {
+        updateData.rruleTimezone = rruleTimezone;
+      }
+
+      if (rruleRunAtHour !== undefined) {
+        updateData.rruleRunAtHour = rruleRunAtHour;
+      }
+
+      if (rruleRunAtMinute !== undefined) {
+        updateData.rruleRunAtMinute = rruleRunAtMinute;
       }
 
       const { data, error } = await authClient.organization.update({

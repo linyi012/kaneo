@@ -1,3 +1,9 @@
+import {
+  DEFAULT_WORKSPACE_RRULE_SCHEDULE,
+  type WorkspaceRruleSchedule,
+  zonedScheduleToUtc,
+} from "@kaneo/libs";
+
 export type RruleFrequency = "daily" | "weekly" | "monthly" | "yearly";
 
 export type RruleBuilderState = {
@@ -71,9 +77,10 @@ export function parseIcalUtc(value: string): Date | null {
   );
 }
 
-export function defaultBuilderState(): RruleBuilderState {
-  const start = new Date();
-  start.setUTCHours(9, 0, 0, 0);
+export function defaultBuilderState(
+  schedule: WorkspaceRruleSchedule = DEFAULT_WORKSPACE_RRULE_SCHEDULE,
+): RruleBuilderState {
+  const start = zonedScheduleToUtc(new Date(), schedule);
   return {
     frequency: "daily",
     interval: 1,
@@ -128,8 +135,11 @@ export function buildRruleString(state: RruleBuilderState): string {
   return lines.join("\n");
 }
 
-export function parseRruleString(rruleString: string): RruleBuilderState {
-  const state = defaultBuilderState();
+export function parseRruleString(
+  rruleString: string,
+  schedule?: WorkspaceRruleSchedule,
+): RruleBuilderState {
+  const state = defaultBuilderState(schedule);
   if (!rruleString.trim()) {
     return state;
   }

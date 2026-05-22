@@ -110,6 +110,9 @@ export const workspaceTable = pgTable("workspace", {
   logo: text("logo"),
   metadata: text("metadata"),
   description: text("description"),
+  rruleTimezone: text("rrule_timezone").default("UTC").notNull(),
+  rruleRunAtHour: integer("rrule_run_at_hour").default(9).notNull(),
+  rruleRunAtMinute: integer("rrule_run_at_minute").default(0).notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 });
 

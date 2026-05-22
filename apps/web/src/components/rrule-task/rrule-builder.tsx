@@ -1,3 +1,7 @@
+import {
+  applyScheduleToCalendarDate,
+  type WorkspaceRruleSchedule,
+} from "@kaneo/libs";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -31,6 +35,7 @@ import {
 type RRuleBuilderProps = {
   value: string;
   onRruleChange: (rrule: string) => void;
+  schedule?: WorkspaceRruleSchedule;
   className?: string;
 };
 
@@ -50,10 +55,13 @@ const WEEKDAY_FIELDS: {
 export default function RRuleBuilder({
   value,
   onRruleChange,
+  schedule,
   className,
 }: RRuleBuilderProps) {
   const [state, setState] = useState<RruleBuilderState>(() =>
-    value.trim() ? parseRruleString(value) : defaultBuilderState(),
+    value.trim()
+      ? parseRruleString(value, schedule)
+      : defaultBuilderState(schedule),
   );
   const onRruleChangeRef = useRef(onRruleChange);
   onRruleChangeRef.current = onRruleChange;
@@ -61,9 +69,13 @@ export default function RRuleBuilder({
 
   useEffect(() => {
     if (value === lastEmittedRef.current) return;
-    setState(value.trim() ? parseRruleString(value) : defaultBuilderState());
+    setState(
+      value.trim()
+        ? parseRruleString(value, schedule)
+        : defaultBuilderState(schedule),
+    );
     lastEmittedRef.current = value;
-  }, [value]);
+  }, [value, schedule]);
 
   useEffect(() => {
     const next = buildRruleString(state);
@@ -148,7 +160,12 @@ export default function RRuleBuilder({
                   mode="single"
                   selected={state.startDate}
                   onSelect={(date) => {
-                    if (date) patchState({ startDate: date });
+                    if (!date) return;
+                    patchState({
+                      startDate: schedule
+                        ? applyScheduleToCalendarDate(date, schedule)
+                        : date,
+                    });
                   }}
                   className="w-full bg-popover"
                 />
@@ -172,7 +189,14 @@ export default function RRuleBuilder({
                 <Calendar
                   mode="single"
                   selected={state.endDate}
-                  onSelect={(date) => patchState({ endDate: date })}
+                  onSelect={(date) => {
+                    if (!date) return;
+                    patchState({
+                      endDate: schedule
+                        ? applyScheduleToCalendarDate(date, schedule)
+                        : date,
+                    });
+                  }}
                   className="w-full bg-popover"
                 />
                 <div className="border-t border-border p-1">

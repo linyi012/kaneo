@@ -40,6 +40,7 @@ import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRouteImp
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRruleTasksRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/rrule-tasks'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectTemplatesRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/project-templates'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMembersRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/members'
+import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/rrule-schedule'
 import { Route as LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRouteImport } from './routes/_layout/_authenticated/dashboard/settings/workspace/general'
 import { Route as LayoutAuthenticatedDashboardSettingsAccountPreferencesRouteImport } from './routes/_layout/_authenticated/dashboard/settings/account/preferences'
 import { Route as LayoutAuthenticatedDashboardSettingsAccountNotificationsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/account/notifications'
@@ -229,6 +230,12 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMembersRoute =
     path: '/members',
     getParentRoute: () => LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
   } as any)
+const LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute =
+  LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRouteImport.update({
+    id: '/rrule-schedule',
+    path: '/rrule-schedule',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsWorkspaceRoute,
+  } as any)
 const LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute =
   LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRouteImport.update({
     id: '/general',
@@ -367,6 +374,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings/account/notifications': typeof LayoutAuthenticatedDashboardSettingsAccountNotificationsRoute
   '/dashboard/settings/account/preferences': typeof LayoutAuthenticatedDashboardSettingsAccountPreferencesRoute
   '/dashboard/settings/workspace/general': typeof LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute
+  '/dashboard/settings/workspace/rrule-schedule': typeof LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute
   '/dashboard/workspace/$workspaceId/members': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMembersRoute
   '/dashboard/workspace/$workspaceId/project-templates': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectTemplatesRoute
   '/dashboard/workspace/$workspaceId/rrule-tasks': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRruleTasksRoute
@@ -409,6 +417,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings/account/notifications': typeof LayoutAuthenticatedDashboardSettingsAccountNotificationsRoute
   '/dashboard/settings/account/preferences': typeof LayoutAuthenticatedDashboardSettingsAccountPreferencesRoute
   '/dashboard/settings/workspace/general': typeof LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute
+  '/dashboard/settings/workspace/rrule-schedule': typeof LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute
   '/dashboard/workspace/$workspaceId/members': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMembersRoute
   '/dashboard/workspace/$workspaceId/project-templates': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectTemplatesRoute
   '/dashboard/workspace/$workspaceId/rrule-tasks': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRruleTasksRoute
@@ -457,6 +466,7 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/settings/account/notifications': typeof LayoutAuthenticatedDashboardSettingsAccountNotificationsRoute
   '/_layout/_authenticated/dashboard/settings/account/preferences': typeof LayoutAuthenticatedDashboardSettingsAccountPreferencesRoute
   '/_layout/_authenticated/dashboard/settings/workspace/general': typeof LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute
+  '/_layout/_authenticated/dashboard/settings/workspace/rrule-schedule': typeof LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/members': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMembersRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project-templates': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectTemplatesRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/rrule-tasks': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRruleTasksRoute
@@ -504,6 +514,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/account/notifications'
     | '/dashboard/settings/account/preferences'
     | '/dashboard/settings/workspace/general'
+    | '/dashboard/settings/workspace/rrule-schedule'
     | '/dashboard/workspace/$workspaceId/members'
     | '/dashboard/workspace/$workspaceId/project-templates'
     | '/dashboard/workspace/$workspaceId/rrule-tasks'
@@ -546,6 +557,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/account/notifications'
     | '/dashboard/settings/account/preferences'
     | '/dashboard/settings/workspace/general'
+    | '/dashboard/settings/workspace/rrule-schedule'
     | '/dashboard/workspace/$workspaceId/members'
     | '/dashboard/workspace/$workspaceId/project-templates'
     | '/dashboard/workspace/$workspaceId/rrule-tasks'
@@ -593,6 +605,7 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/settings/account/notifications'
     | '/_layout/_authenticated/dashboard/settings/account/preferences'
     | '/_layout/_authenticated/dashboard/settings/workspace/general'
+    | '/_layout/_authenticated/dashboard/settings/workspace/rrule-schedule'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/members'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project-templates'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/rrule-tasks'
@@ -838,6 +851,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMembersRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
     }
+    '/_layout/_authenticated/dashboard/settings/workspace/rrule-schedule': {
+      id: '/_layout/_authenticated/dashboard/settings/workspace/rrule-schedule'
+      path: '/rrule-schedule'
+      fullPath: '/dashboard/settings/workspace/rrule-schedule'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRoute
+    }
     '/_layout/_authenticated/dashboard/settings/workspace/general': {
       id: '/_layout/_authenticated/dashboard/settings/workspace/general'
       path: '/general'
@@ -989,12 +1009,15 @@ const LayoutAuthenticatedDashboardSettingsProjectsRouteWithChildren =
 
 interface LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren {
   LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute
+  LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute: typeof LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute
 }
 
 const LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren: LayoutAuthenticatedDashboardSettingsWorkspaceRouteChildren =
   {
     LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute:
       LayoutAuthenticatedDashboardSettingsWorkspaceGeneralRoute,
+    LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute:
+      LayoutAuthenticatedDashboardSettingsWorkspaceRruleScheduleRoute,
   }
 
 const LayoutAuthenticatedDashboardSettingsWorkspaceRouteWithChildren =

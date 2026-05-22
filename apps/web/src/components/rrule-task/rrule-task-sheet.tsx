@@ -1,5 +1,6 @@
+import { parseWorkspaceRruleSchedule } from "@kaneo/libs";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TemplateDueDaysPopover from "@/components/project-template/template-due-days-popover";
 import TemplateTaskAssigneePopover from "@/components/project-template/template-task-assignee-popover";
@@ -20,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDeleteRruleTask } from "@/hooks/mutations/rrule-task/use-delete-rrule-task";
 import { useUpdateRruleTask } from "@/hooks/mutations/rrule-task/use-update-rrule-task";
 import { useRruleTask } from "@/hooks/queries/rrule-task/use-rrule-task";
+import { authClient } from "@/lib/auth-client";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
@@ -46,6 +48,14 @@ export default function RruleTaskSheet({
   onClose,
 }: RruleTaskSheetProps) {
   const { t } = useTranslation();
+  const { data: organizations } = authClient.useListOrganizations();
+  const schedule = useMemo(
+    () =>
+      parseWorkspaceRruleSchedule(
+        organizations?.find((organization) => organization.id === workspaceId),
+      ),
+    [organizations, workspaceId],
+  );
   const { data: task, isLoading } = useRruleTask(taskId ?? "");
   const { mutateAsync: updateTask, isPending } =
     useUpdateRruleTask(workspaceId);
@@ -165,6 +175,7 @@ export default function RruleTaskSheet({
                 key={task.id}
                 value={rrule}
                 onRruleChange={setRrule}
+                schedule={schedule}
               />
 
               <div className="space-y-2">
