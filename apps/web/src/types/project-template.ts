@@ -13,7 +13,7 @@ export type ProjectTemplateTask = {
   status: string;
   priority: string | null;
   startDate: string | null;
-  dueDate: string | null;
+  dueDaysOffset: number | null;
   position: number | null;
   createdAt: string;
   updatedAt?: string;

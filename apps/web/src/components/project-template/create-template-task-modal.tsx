@@ -1,27 +1,34 @@
-import { useState } from "react";
+import { Check } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateTemplateTask } from "@/hooks/mutations/project-template/use-create-template-task";
+import { cn } from "@/lib/cn";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
+import TemplateDueDaysPopover from "./template-due-days-popover";
+import TemplateTaskAssigneePopover from "./template-task-assignee-popover";
+import type { TemplateTaskLabel } from "./template-task-label";
+import TemplateTaskLabelsEditor from "./template-task-labels-editor";
 
 const PRIORITIES = ["no-priority", "low", "medium", "high", "urgent"] as const;
+
+type Priority = (typeof PRIORITIES)[number];
 
 type CreateTemplateTaskModalProps = {
   open: boolean;
@@ -40,15 +47,39 @@ export default function CreateTemplateTaskModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("to-do");
-  const [priority, setPriority] = useState("no-priority");
+  const [priority, setPriority] = useState<Priority>("no-priority");
+  const [assigneeId, setAssigneeId] = useState("");
+  const [dueDaysOffset, setDueDaysOffset] = useState<number | null>(null);
+  const [labels, setLabels] = useState<TemplateTaskLabel[]>([]);
+
   const { mutateAsync: createTask, isPending } =
     useCreateTemplateTask(workspaceId);
 
-  const handleClose = () => {
+  const priorityOptions = useMemo(
+    () =>
+      PRIORITIES.map((value) => ({
+        value,
+        label: getPriorityLabel(value),
+      })),
+    [],
+  );
+
+  const selectedPriority = priorityOptions.find((p) => p.value === priority);
+
+  const statusLabel = t(`tasks:status.${status}`, { defaultValue: status });
+
+  const resetForm = () => {
     setTitle("");
     setDescription("");
     setStatus("to-do");
     setPriority("no-priority");
+    setAssigneeId("");
+    setDueDaysOffset(null);
+    setLabels([]);
+  };
+
+  const handleClose = () => {
+    resetForm();
     onClose();
   };
 
@@ -61,66 +92,152 @@ export default function CreateTemplateTaskModal({
       description,
       status,
       priority,
+      userId: assigneeId || undefined,
+      dueDaysOffset,
+      labels: labels.map((l) => ({ name: l.name, color: l.color })),
     });
     handleClose();
   };
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent className="max-w-lg">
-        <form onSubmit={(e) => void handleSubmit(e)}>
-          <DialogHeader>
-            <DialogTitle>{t("projectTemplate:createTask.title")}</DialogTitle>
-          </DialogHeader>
-          <div className="py-4 space-y-3">
+      <DialogContent
+        className="kaneo-create-task-modal max-w-2xl max-h-[90vh] flex flex-col overflow-hidden"
+        showCloseButton={false}
+      >
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="text-sm font-medium">
+            {t("projectTemplate:createTask.title")}
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            {t("projectTemplate:createTask.title")}
+          </DialogDescription>
+        </DialogHeader>
+
+        <form
+          onSubmit={(e) => void handleSubmit(e)}
+          className="flex flex-col flex-1 min-h-0 space-y-6"
+        >
+          <div className="flex-1 min-h-0 overflow-y-auto space-y-6 px-6">
             <Input
+              unstyled
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder={t("projectTemplate:task.title")}
               autoFocus
+              placeholder={t("common:modals.createTask.taskTitlePlaceholder")}
+              className="w-full [&_[data-slot=input]]:h-auto [&_[data-slot=input]]:px-0 [&_[data-slot=input]]:py-3 [&_[data-slot=input]]:text-2xl [&_[data-slot=input]]:leading-tight [&_[data-slot=input]]:font-semibold [&_[data-slot=input]]:tracking-tight [&_[data-slot=input]]:text-foreground [&_[data-slot=input]]:placeholder:text-muted-foreground [&_[data-slot=input]]:outline-none"
+              required
             />
+
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder={t("projectTemplate:task.description")}
-              rows={4}
+              placeholder={t("common:modals.createTask.descriptionPlaceholder")}
+              rows={6}
+              className="min-h-[160px] resize-y"
             />
-            <div className="grid grid-cols-2 gap-3">
-              <Select value={status} onValueChange={setStatus}>
-                <SelectTrigger>
-                  <SelectValue placeholder={t("projectTemplate:task.status")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="to-do">to-do</SelectItem>
-                  <SelectItem value="in-progress">in-progress</SelectItem>
-                  <SelectItem value="in-review">in-review</SelectItem>
-                  <SelectItem value="done">done</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={priority} onValueChange={setPriority}>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t("projectTemplate:task.priority")}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {PRIORITIES.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      <span className="flex items-center gap-2">
-                        {getPriorityIcon(p)}
-                        {getPriorityLabel(p)}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+
+            <TemplateTaskLabelsEditor
+              workspaceId={workspaceId}
+              labels={labels}
+              onChange={setLabels}
+            />
+
+            <div className="flex flex-wrap items-center gap-2 py-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 bg-accent/50 text-foreground rounded-md text-xs font-medium border border-border hover:bg-accent/60"
+                  >
+                    <div className="w-1.5 h-1.5 bg-foreground rounded-full" />
+                    {statusLabel}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-48 p-1" align="start">
+                  {(["to-do", "in-progress", "in-review", "done"] as const).map(
+                    (s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className="w-full flex items-center gap-2 px-2 py-1.5 text-sm hover:bg-accent/50 text-left h-8"
+                        onClick={() => setStatus(s)}
+                      >
+                        <span>
+                          {t(`tasks:status.${s}`, { defaultValue: s })}
+                        </span>
+                        {status === s && <Check className="ml-auto h-4 w-4" />}
+                      </button>
+                    ),
+                  )}
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn(
+                      "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors border border-border hover:bg-accent/50",
+                      priority !== "no-priority"
+                        ? "bg-accent/30 text-foreground"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {getPriorityIcon(priority)}
+                    <span>
+                      {selectedPriority?.label ??
+                        t("common:modals.createTask.priority")}
+                    </span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-48 p-1" align="start">
+                  <div className="space-y-1">
+                    {priorityOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className="w-full flex items-center gap-2 px-2 py-1.5 text-sm hover:bg-accent/50 text-left transition-colors h-8"
+                        onClick={() => setPriority(option.value)}
+                      >
+                        {getPriorityIcon(option.value)}
+                        <span className="text-sm">{option.label}</span>
+                        {priority === option.value && (
+                          <Check className="ml-auto h-4 w-4" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <TemplateTaskAssigneePopover
+                workspaceId={workspaceId}
+                assigneeId={assigneeId}
+                onChange={setAssigneeId}
+              />
+
+              <TemplateDueDaysPopover
+                dueDaysOffset={dueDaysOffset}
+                onChange={setDueDaysOffset}
+              />
             </div>
           </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={handleClose}>
+
+          <DialogFooter className="flex-shrink-0 border-t border-border bg-background px-6 py-4">
+            <Button
+              type="button"
+              onClick={handleClose}
+              variant="outline"
+              size="sm"
+            >
               {t("common:actions.cancel")}
             </Button>
-            <Button type="submit" disabled={isPending || !title.trim()}>
+            <Button
+              type="submit"
+              disabled={isPending || !title.trim()}
+              size="sm"
+            >
               {t("projectTemplate:actions.create")}
             </Button>
           </DialogFooter>

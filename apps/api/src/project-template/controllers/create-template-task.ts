@@ -6,6 +6,7 @@ import {
   projectTemplateTaskTable,
   userTable,
 } from "../../database/schema";
+import { assertValidDueDaysOffset } from "../template-due-date";
 import {
   assertValidTemplatePriority,
   assertValidTemplateStatus,
@@ -20,7 +21,7 @@ type CreateTemplateTaskInput = {
   priority?: string;
   userId?: string;
   startDate?: Date;
-  dueDate?: Date;
+  dueDaysOffset?: number | null;
   labels?: { name: string; color: string }[];
 };
 
@@ -30,6 +31,7 @@ async function createTemplateTask(input: CreateTemplateTaskInput) {
 
   assertValidTemplateStatus(resolvedStatus);
   assertValidTemplatePriority(resolvedPriority);
+  assertValidDueDaysOffset(input.dueDaysOffset);
 
   const nextNumber = await getNextTemplateTaskNumber(input.templateId);
 
@@ -50,7 +52,7 @@ async function createTemplateTask(input: CreateTemplateTaskInput) {
       priority: resolvedPriority,
       userId: input.userId || null,
       startDate: input.startDate || null,
-      dueDate: input.dueDate || null,
+      dueDaysOffset: input.dueDaysOffset ?? null,
       number: nextNumber + 1,
       position: nextPosition,
     })

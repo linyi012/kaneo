@@ -144,7 +144,7 @@ const projectTemplate = new Hono<{
         priority: v.optional(v.string()),
         userId: v.optional(v.string()),
         startDate: v.optional(v.string()),
-        dueDate: v.optional(v.string()),
+        dueDaysOffset: v.optional(v.nullable(v.number())),
         labels: v.optional(
           v.array(
             v.object({
@@ -166,7 +166,7 @@ const projectTemplate = new Hono<{
         priority: body.priority,
         userId: body.userId,
         startDate: body.startDate ? new Date(body.startDate) : undefined,
-        dueDate: body.dueDate ? new Date(body.dueDate) : undefined,
+        dueDaysOffset: body.dueDaysOffset,
         labels: body.labels,
       });
       return c.json(task);
@@ -219,7 +219,7 @@ const projectTemplate = new Hono<{
         priority: v.string(),
         userId: v.optional(v.nullable(v.string())),
         startDate: v.optional(v.nullable(v.string())),
-        dueDate: v.optional(v.nullable(v.string())),
+        dueDaysOffset: v.optional(v.nullable(v.number())),
         position: v.number(),
         labels: v.optional(
           v.array(
@@ -242,7 +242,7 @@ const projectTemplate = new Hono<{
         priority: body.priority,
         userId: body.userId,
         startDate: body.startDate ? new Date(body.startDate) : null,
-        dueDate: body.dueDate ? new Date(body.dueDate) : null,
+        dueDaysOffset: body.dueDaysOffset,
         position: body.position,
         labels: body.labels,
       });

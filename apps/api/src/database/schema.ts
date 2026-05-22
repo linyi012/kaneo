@@ -393,7 +393,7 @@ export const projectTemplateTaskTable = pgTable(
     status: text("status").notNull().default("to-do"),
     priority: text("priority").default("low"),
     startDate: timestamp("start_date", { mode: "date" }),
-    dueDate: timestamp("due_date", { mode: "date" }),
+    dueDaysOffset: integer("due_days_offset"),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" })
       .defaultNow()

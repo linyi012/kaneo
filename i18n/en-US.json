@@ -1825,13 +1825,26 @@
 			"title": "Delete template?",
 			"description": "This will permanently delete the template and all its tasks."
 		},
+		"dueDays": {
+			"label": "Due after project",
+			"hint": "Days after the project is created from this template",
+			"afterProject": "+{{count}} days",
+			"afterProjectFull": "{{count}} days after project creation",
+			"quick": "{{count}}d",
+			"daysUnit": "days",
+			"clear": "Clear",
+			"apply": "Apply"
+		},
 		"task": {
 			"editTitle": "Edit template task",
 			"saved": "Template task saved",
 			"title": "Title",
 			"description": "Description",
 			"status": "Status",
-			"priority": "Priority"
+			"priority": "Priority",
+			"dueDays": "Due (days after project)",
+			"properties": "Properties",
+			"assignee": "Assignee"
 		},
 		"actions": {
 			"create": "Create",

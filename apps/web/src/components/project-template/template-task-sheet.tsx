@@ -19,12 +19,16 @@ import { useTemplateTask } from "@/hooks/queries/project-template/use-template-t
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
+import TemplateDueDaysPopover from "./template-due-days-popover";
+import TemplateTaskAssigneePopover from "./template-task-assignee-popover";
+import type { TemplateTaskLabel } from "./template-task-label";
+import TemplateTaskLabelsEditor from "./template-task-labels-editor";
 
 const TEMPLATE_STATUSES = [
-  { slug: "to-do", labelKey: "toDo" },
-  { slug: "in-progress", labelKey: "inProgress" },
-  { slug: "in-review", labelKey: "inReview" },
-  { slug: "done", labelKey: "done" },
+  "to-do",
+  "in-progress",
+  "in-review",
+  "done",
 ] as const;
 
 const PRIORITIES = ["no-priority", "low", "medium", "high", "urgent"] as const;
@@ -50,6 +54,9 @@ export default function TemplateTaskSheet({
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("to-do");
   const [priority, setPriority] = useState("no-priority");
+  const [assigneeId, setAssigneeId] = useState("");
+  const [dueDaysOffset, setDueDaysOffset] = useState<number | null>(null);
+  const [labels, setLabels] = useState<TemplateTaskLabel[]>([]);
 
   useEffect(() => {
     if (!task) return;
@@ -57,6 +64,11 @@ export default function TemplateTaskSheet({
     setDescription(task.description ?? "");
     setStatus(task.status);
     setPriority(task.priority ?? "no-priority");
+    setAssigneeId(task.userId ?? "");
+    setDueDaysOffset(task.dueDaysOffset ?? null);
+    setLabels(
+      task.labels?.map((l) => ({ name: l.name, color: l.color })) ?? [],
+    );
   }, [task]);
 
   const handleSave = async () => {
@@ -69,14 +81,11 @@ export default function TemplateTaskSheet({
           description,
           status,
           priority,
-          userId: task.userId,
+          userId: assigneeId || null,
           startDate: task.startDate,
-          dueDate: task.dueDate,
+          dueDaysOffset,
           position: task.position ?? 0,
-          labels: task.labels?.map((l) => ({
-            name: l.name,
-            color: l.color,
-          })),
+          labels: labels.map((l) => ({ name: l.name, color: l.color })),
         },
       });
       toast.success(t("projectTemplate:task.saved"));
@@ -148,50 +157,76 @@ export default function TemplateTaskSheet({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label className="text-xs font-medium text-muted-foreground">
-                    {t("projectTemplate:task.status")}
-                  </Label>
-                  <Select value={status} onValueChange={setStatus}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TEMPLATE_STATUSES.map((s) => (
-                        <SelectItem key={s.slug} value={s.slug}>
-                          {s.slug}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-medium text-muted-foreground">
-                    {t("projectTemplate:task.priority")}
-                  </Label>
-                  <Select value={priority} onValueChange={setPriority}>
-                    <SelectTrigger>
-                      <SelectValue>
-                        <span className="flex items-center gap-2">
-                          {getPriorityIcon(priority)}
-                          {getPriorityLabel(priority)}
-                        </span>
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {PRIORITIES.map((p) => (
-                        <SelectItem key={p} value={p}>
+              <div className="space-y-2">
+                <Label className="text-xs font-medium text-muted-foreground">
+                  {t("projectTemplate:task.properties")}
+                </Label>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] text-muted-foreground">
+                      {t("projectTemplate:task.status")}
+                    </span>
+                    <Select value={status} onValueChange={setStatus}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {TEMPLATE_STATUSES.map((s) => (
+                          <SelectItem key={s} value={s}>
+                            {t(`tasks:status.${s}`, { defaultValue: s })}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] text-muted-foreground">
+                      {t("projectTemplate:task.priority")}
+                    </span>
+                    <Select value={priority} onValueChange={setPriority}>
+                      <SelectTrigger>
+                        <SelectValue>
                           <span className="flex items-center gap-2">
-                            {getPriorityIcon(p)}
-                            {getPriorityLabel(p)}
+                            {getPriorityIcon(priority)}
+                            {getPriorityLabel(priority)}
                           </span>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PRIORITIES.map((p) => (
+                          <SelectItem key={p} value={p}>
+                            <span className="flex items-center gap-2">
+                              {getPriorityIcon(p)}
+                              {getPriorityLabel(p)}
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <TemplateTaskAssigneePopover
+                    workspaceId={workspaceId}
+                    assigneeId={assigneeId}
+                    onChange={setAssigneeId}
+                  />
+                  <TemplateDueDaysPopover
+                    dueDaysOffset={dueDaysOffset}
+                    onChange={setDueDaysOffset}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-xs font-medium text-muted-foreground">
+                  {t("common:modals.createTask.labels")}
+                </Label>
+                <TemplateTaskLabelsEditor
+                  workspaceId={workspaceId}
+                  labels={labels}
+                  onChange={setLabels}
+                />
               </div>
 
               <div className="flex items-center justify-between gap-2 pt-2">

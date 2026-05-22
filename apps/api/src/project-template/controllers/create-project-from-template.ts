@@ -11,6 +11,7 @@ import {
 } from "../../database/schema";
 import createProject from "../../project/controllers/create-project";
 import { coercePriority, coerceStatus } from "../../task/validate-task-fields";
+import { resolveTemplateTaskDueDate } from "../template-due-date";
 
 async function createProjectFromTemplate({
   templateId,
@@ -45,6 +46,8 @@ async function createProjectFromTemplate({
   if (!createdProject) {
     throw new HTTPException(500, { message: "Failed to create project" });
   }
+
+  const projectBase = createdProject.createdAt ?? new Date();
 
   const columns = await db
     .select()
@@ -90,7 +93,10 @@ async function createProjectFromTemplate({
         priority,
         userId: templateTask.userId,
         startDate: templateTask.startDate,
-        dueDate: templateTask.dueDate,
+        dueDate: resolveTemplateTaskDueDate(
+          projectBase,
+          templateTask.dueDaysOffset,
+        ),
         number: templateTask.number ?? 1,
         position: nextPosition,
       })

@@ -6,6 +6,7 @@ import {
   projectTemplateTaskTable,
   userTable,
 } from "../../database/schema";
+import { assertValidDueDaysOffset } from "../template-due-date";
 import {
   assertValidTemplatePriority,
   assertValidTemplateStatus,
@@ -19,7 +20,7 @@ type UpdateTemplateTaskInput = {
   priority: string;
   userId?: string | null;
   startDate?: Date | null;
-  dueDate?: Date | null;
+  dueDaysOffset?: number | null;
   position: number;
   labels?: { name: string; color: string }[];
 };
@@ -27,6 +28,7 @@ type UpdateTemplateTaskInput = {
 async function updateTemplateTask(input: UpdateTemplateTaskInput) {
   assertValidTemplateStatus(input.status);
   assertValidTemplatePriority(input.priority);
+  assertValidDueDaysOffset(input.dueDaysOffset);
 
   const [updatedTask] = await db
     .update(projectTemplateTaskTable)
@@ -37,7 +39,7 @@ async function updateTemplateTask(input: UpdateTemplateTaskInput) {
       priority: input.priority,
       userId: input.userId || null,
       startDate: input.startDate ?? null,
-      dueDate: input.dueDate ?? null,
+      dueDaysOffset: input.dueDaysOffset ?? null,
       position: input.position,
     })
     .where(eq(projectTemplateTaskTable.id, input.id))

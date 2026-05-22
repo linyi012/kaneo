@@ -18,7 +18,7 @@ async function getTemplateTask(taskId: string) {
       status: projectTemplateTaskTable.status,
       priority: projectTemplateTaskTable.priority,
       startDate: projectTemplateTaskTable.startDate,
-      dueDate: projectTemplateTaskTable.dueDate,
+      dueDaysOffset: projectTemplateTaskTable.dueDaysOffset,
       position: projectTemplateTaskTable.position,
       createdAt: projectTemplateTaskTable.createdAt,
       updatedAt: projectTemplateTaskTable.updatedAt,

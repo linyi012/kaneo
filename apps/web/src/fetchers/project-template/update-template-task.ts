@@ -11,7 +11,7 @@ async function updateTemplateTask(
     | "priority"
     | "userId"
     | "startDate"
-    | "dueDate"
+    | "dueDaysOffset"
     | "position"
   > & { labels?: { name: string; color: string }[] },
 ) {
@@ -24,7 +24,7 @@ async function updateTemplateTask(
       priority: task.priority ?? "no-priority",
       userId: task.userId,
       startDate: task.startDate,
-      dueDate: task.dueDate,
+      dueDaysOffset: task.dueDaysOffset,
       position: task.position ?? 0,
       labels: task.labels,
     },

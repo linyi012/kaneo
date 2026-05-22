@@ -8,7 +8,7 @@ type CreateTemplateTaskInput = {
   priority?: string;
   userId?: string;
   startDate?: string;
-  dueDate?: string;
+  dueDaysOffset?: number | null;
   labels?: { name: string; color: string }[];
 };
 
@@ -22,7 +22,7 @@ async function createTemplateTask(input: CreateTemplateTaskInput) {
       priority: input.priority,
       userId: input.userId,
       startDate: input.startDate,
-      dueDate: input.dueDate,
+      dueDaysOffset: input.dueDaysOffset,
       labels: input.labels,
     },
   });
