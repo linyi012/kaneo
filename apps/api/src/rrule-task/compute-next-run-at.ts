@@ -30,9 +30,10 @@ export function advanceNextRunAtAfter(
   occurrence: Date,
   now: Date,
 ): Date | null {
-  let next = computeNextRunAt(rruleString, occurrence);
-  while (next && next <= now) {
-    next = computeNextRunAt(rruleString, next);
+  const rule = parseRruleString(rruleString);
+  const nextAfterOccurrence = rule.after(occurrence, false);
+  if (nextAfterOccurrence && nextAfterOccurrence > now) {
+    return nextAfterOccurrence;
   }
-  return next;
+  return rule.after(now, false);
 }

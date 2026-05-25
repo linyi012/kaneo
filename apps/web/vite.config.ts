@@ -26,7 +26,8 @@ export default defineConfig({
     // Same-origin /api in dev so auth cookies work (5173 vs 1337 are cross-origin).
     proxy: {
       "/api": {
-        target: process.env.VITE_DEV_API_PROXY_TARGET ?? "http://127.0.0.1:1337",
+        target:
+          process.env.VITE_DEV_API_PROXY_TARGET ?? "http://127.0.0.1:1337",
         changeOrigin: true,
         ws: true,
       },

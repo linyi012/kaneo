@@ -627,8 +627,6 @@ export async function runStartupTasks() {
 
   initializePlugins();
   initializeScheduler();
-  await rescheduleRRuleTasks();
-  await initializeWebSocketAdapter();
 }
 
 export async function startServer(
@@ -657,6 +655,16 @@ export async function startServer(
   );
 
   injectWebSocket(server);
+
+  try {
+    await initializeWebSocketAdapter();
+  } catch (error) {
+    console.error("❌ WebSocket adapter initialization failed:", error);
+  }
+
+  void rescheduleRRuleTasks().catch((error) => {
+    console.error("❌ RRule task scheduler failed:", error);
+  });
 
   const gracefulShutdown = async () => {
     if (shuttingDown) return;
