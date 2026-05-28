@@ -1169,7 +1169,10 @@
 		},
 		"view": {
 			"board": "看板",
-			"list": "列表"
+			"list": "列表",
+			"backlog": "待办池",
+			"tasks": "任务",
+			"gantt": "甘特图"
 		},
 		"actions": {
 			"archive": "归档",
