@@ -352,6 +352,9 @@ export const auth = betterAuth({
       },
     }),
     deviceAuthorization({
+      // Better Auth currently validates `schema` as required (Zod v4);
+      // an empty object is a no-op schema override and keeps defaults.
+      schema: {},
       verificationUri: getDeviceAuthVerificationUri(),
       validateClient: async (clientId) =>
         getDeviceAuthClientIds().has(clientId),

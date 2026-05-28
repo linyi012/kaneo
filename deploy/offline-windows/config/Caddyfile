@@ -1,0 +1,22 @@
+﻿:5173 {
+	encode gzip
+	root * C:/kaneo/web/dist
+
+	# Serve API through same-origin /api to avoid CORS/cookie issues.
+	# Use `handle` (not `handle_path`) so `/api/...` is forwarded unchanged.
+	handle /api* {
+		reverse_proxy 127.0.0.1:1337
+	}
+
+	# OAuth/MCP discovery endpoints (also same-origin).
+	handle /.well-known/* {
+		reverse_proxy 127.0.0.1:1337
+	}
+
+	# SPA fallback + static assets.
+	handle {
+		try_files {path} /index.html
+		file_server
+	}
+}
+
