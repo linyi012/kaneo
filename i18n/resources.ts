@@ -7,6 +7,7 @@ import mkMK from "./mk-MK.json";
 import nlNL from "./nl-NL.json";
 import ruRU from "./ru-RU.json";
 import ukUA from "./uk-UA.json";
+import zhCN from "./zh-CN.json";
 
 export const supportedLocales = [
   "mk-MK",
@@ -18,6 +19,7 @@ export const supportedLocales = [
   "fr-FR",
   "ru-RU",
   "uk-UA",
+  "zh-CN",
 ] as const;
 
 export type AppLocale = (typeof supportedLocales)[number];
@@ -34,4 +36,5 @@ export const resources = {
   "es-ES": esES,
   "ru-RU": ruRU,
   "uk-UA": ukUA,
+  "zh-CN": zhCN,
 } as const;
