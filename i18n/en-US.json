@@ -1303,7 +1303,10 @@
 		"boardSearchPlaceholder": "Search tickets...",
 		"view": {
 			"board": "Board",
-			"list": "List"
+			"list": "List",
+			"backlog": "Backlog",
+			"tasks": "Tasks",
+			"gantt": "Gantt"
 		},
 		"common": {
 			"selectTask": "Select task",

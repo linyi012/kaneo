@@ -581,7 +581,9 @@
 				"keyShort": "Ключ має містити щонайменше 2 символи",
 				"keyMax": "Ключ може містити не більше 8 символів",
 				"iconRequired": "Іконка є обов'язковою"
-			}
+			},
+			"importExportTasks": "Import/Export",
+			"importExportTasksDescription": "Import and export tasks."
 		},
 		"projectIntegrations": {
 			"pageTitle": "Інтеґрації проєкту",
@@ -1005,6 +1007,29 @@
 			"merged": "Змерджено",
 			"draft": "Чернетка",
 			"open": "Відкрито"
+		},
+		"workspaceRruleSchedule": {
+			"pageTitle": "RRule Task Schedule",
+			"readOnlyNote": "Only workspace owners and admins can change these settings.",
+			"runAtHint": "Local wall-clock time in the selected timezone",
+			"runAtLabel": "Daily run time",
+			"save": "Save",
+			"saving": "Saving…",
+			"scopeNote": "Changes apply only to new or edited RRule tasks. Existing schedules are not modified.",
+			"sidebarTitle": "RRule schedule",
+			"subtitle": "Set the timezone and daily run time used as defaults when creating recurring tasks.",
+			"timezoneHint": "IANA timezone for recurring task run times",
+			"timezoneLabel": "Timezone",
+			"timezoneNoResults": "No matching timezones. Try Kenya, Nairobi, or Africa/Nairobi.",
+			"timezoneSearchPlaceholder": "Search by city or country (e.g. Kenya, Nairobi)…",
+			"title": "RRule Task Schedule",
+			"toastUpdated": "RRule schedule settings saved",
+			"toastUpdateError": "Failed to save RRule schedule settings",
+			"validation": {
+				"hourInvalid": "Hour must be between 0 and 23",
+				"minuteInvalid": "Minute must be between 0 and 59",
+				"timezoneInvalid": "Invalid timezone"
+			}
 		}
 	},
 	"navigation": {
@@ -1035,7 +1060,10 @@
 			"projects": "Проєкти",
 			"members": "Учасники",
 			"invitations": "Запрошення",
-			"more": "Більше"
+			"more": "Більше",
+			"backToBoard": "Back to board",
+			"projectTemplates": "ProjectTemplate",
+			"rruleTasks": "RRuleTasks"
 		},
 		"projectList": {
 			"viewProject": "Переглянути проєкт",
@@ -1252,7 +1280,9 @@
 					"yaml": "YAML"
 				}
 			}
-		}
+		},
+		"created": "created this task",
+		"moved": "moved task from \"{{from}}\" to \"{{to}}\""
 	},
 	"tasks": {
 		"status": {
@@ -1275,11 +1305,16 @@
 		"boardSearchPlaceholder": "Пошук тікетів...",
 		"view": {
 			"board": "Дошка",
-			"list": "Список"
+			"list": "Список",
+			"backlog": "Backlog",
+			"gantt": "Gantt",
+			"tasks": "Tasks"
 		},
 		"common": {
 			"selectTask": "Обрати завдання",
-			"loadingTask": "Завантаження завдання..."
+			"loadingTask": "Завантаження завдання...",
+			"taskNotFound": "Task not found",
+			"taskNotFoundDescription": "The task you are looking for does not exist or has been deleted."
 		},
 		"detail": {
 			"subtaskOf": "Підзавдання",
@@ -1797,6 +1832,86 @@
 		},
 		"branding": {
 			"poweredBy": "Працює на"
+		}
+	},
+	"projectTemplate": {
+		"actions": {
+			"create": "Create",
+			"save": "Save"
+		},
+		"addTask": "Add template task",
+		"createProject": {
+			"error": "Failed to create project from template",
+			"success": "Project created from template",
+			"taskCount": "{{count}} tasks will be copied",
+			"title": "Create project from {{name}}"
+		},
+		"createTask": {
+			"title": "Add template task"
+		},
+		"createTemplate": {
+			"button": "New template",
+			"namePlaceholder": "Template name",
+			"title": "Create template"
+		},
+		"deleteTemplate": "Delete template",
+		"deleteTemplateConfirm": {
+			"description": "This will permanently delete the template and all its tasks.",
+			"title": "Delete template?"
+		},
+		"dueDays": {
+			"afterProject": "+{{count}} days",
+			"afterProjectFull": "{{count}} days after project creation",
+			"apply": "Apply",
+			"clear": "Clear",
+			"daysUnit": "days",
+			"hint": "Days after the project is created from this template",
+			"label": "Due after project",
+			"quick": "{{count}}d"
+		},
+		"empty": "No templates yet. Create one to define reusable project structures.",
+		"pageTitle": "Project Templates",
+		"task": {
+			"assignee": "Assignee",
+			"description": "Description",
+			"dueDays": "Due (days after project)",
+			"editTitle": "Edit template task",
+			"priority": "Priority",
+			"properties": "Properties",
+			"saved": "Template task saved",
+			"status": "Status",
+			"title": "Title"
+		},
+		"useTemplate": "Create project from template"
+	},
+	"rruleTask": {
+		"actions": {
+			"create": "Create",
+			"save": "Save"
+		},
+		"addTask": "Add RRule task",
+		"createTask": {
+			"title": "Add RRule task"
+		},
+		"dueDays": {
+			"afterOccurrence": "+{{count}} days after trigger"
+		},
+		"emptyProjects": "No projects in this workspace yet.",
+		"noTasksInProject": "No RRule tasks in this project.",
+		"pageTitle": "RRule Tasks",
+		"rrule": {
+			"label": "Recurrence rule (RRULE)",
+			"placeholder": "DTSTART:20260101T090000Z\nRRULE:FREQ=DAILY;INTERVAL=1"
+		},
+		"task": {
+			"description": "Description",
+			"editTitle": "Edit RRule task",
+			"nextRunAt": "Next run: {{date}}",
+			"priority": "Priority",
+			"properties": "Properties",
+			"saved": "RRule task saved",
+			"status": "Status",
+			"title": "Title"
 		}
 	}
 }
