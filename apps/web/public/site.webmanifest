@@ -1,6 +1,6 @@
 {
-	"name": "Kaneo",
-	"short_name": "Kaneo",
+	"name": "KANEO_APP_NAME",
+	"short_name": "KANEO_APP_NAME",
 	"icons": [
 		{
 			"src": "/web-app-manifest-192x192.png",

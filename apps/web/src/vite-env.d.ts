@@ -4,7 +4,9 @@
 declare const __APP_VERSION__: string;
 
 type ImportMetaEnv = {
-  readonly KANEO_API_URL: string;
+  readonly VITE_API_URL: string;
+  readonly VITE_CLIENT_URL: string;
+  readonly VITE_APP_NAME: string;
 };
 
 type ImportMeta = {
