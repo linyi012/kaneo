@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createProject from "@/fetchers/project/create-project";
+import { invalidateRruleTasks } from "@/lib/invalidate-rrule-tasks";
 
 function useCreateProject({
   name,
@@ -12,8 +13,13 @@ function useCreateProject({
   workspaceId: string;
   icon: string;
 }) {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: () => createProject({ name, slug, workspaceId, icon }),
+    onSuccess: () => {
+      void invalidateRruleTasks(queryClient, workspaceId);
+    },
   });
 }
 
