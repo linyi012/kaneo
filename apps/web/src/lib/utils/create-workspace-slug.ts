@@ -1,4 +1,5 @@
 import { createSlug } from "./create-slug";
+import { generateRandomHex } from "./random-hex";
 
 const RANDOM_SUFFIX_LENGTH = 12;
 
@@ -11,7 +12,7 @@ export function createWorkspaceBaseSlug(value: string): string {
 }
 
 function createRandomSuffix(): string {
-  return crypto.randomUUID().replace(/-/g, "").slice(0, RANDOM_SUFFIX_LENGTH);
+  return generateRandomHex(RANDOM_SUFFIX_LENGTH);
 }
 
 export function createUniqueWorkspaceSlug(
