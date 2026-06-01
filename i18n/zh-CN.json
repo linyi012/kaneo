@@ -348,21 +348,21 @@
 		},
 		"apiKey": {
 			"createDialog": {
-				"create": "创造",
-				"creating": "创造...",
+				"create": "创建",
+				"creating": "创建中...",
 				"description": "创建新的 API 密钥以通过编程方式访问 Kaneo API。",
 				"expiration1d": "1天",
 				"expiration30d": "30天",
 				"expiration7d": "7天",
 				"expiration90d": "90天",
-				"expirationDescription": "选择此 API 密钥应保持有效的时间。永远不会创建没有自动过期的密钥。",
+				"expirationDescription": "选择此 API 密钥应保持有效的时间。选择「永不」将创建不会自动过期的密钥。",
 				"expirationLabel": "到期日",
-				"expirationNever": "绝不",
+				"expirationNever": "永不",
 				"expirationPlaceholder": "选择到期时间",
 				"failedCreate": "无法创建 API 密钥",
 				"nameDescription": "此 API 密钥的描述性名称",
 				"nameLabel": "姓名",
-				"namePlaceholder": "我的 API 钥匙",
+				"namePlaceholder": "我的 API 密钥",
 				"title": "创建 API 密钥",
 				"validation": {
 					"expirationRequired": "需要过期",
@@ -386,14 +386,14 @@
 				"columnActions": "行动",
 				"columnCreated": "已创建",
 				"columnExpires": "过期",
-				"columnKey": "钥匙",
+				"columnKey": "密钥",
 				"columnName": "姓名",
 				"delete": "删除",
 				"deleteAria": "删除{{name}}",
-				"deleteAriaFallback": "API钥匙",
-				"deleteConfirmDescription": "此操作无法撤消。这将永久删除 {{name}}。",
+				"deleteAriaFallback": "API 密钥",
+				"deleteConfirmDescription": "此操作无法撤销。这将永久删除 {{name}}。",
 				"deleteConfirmTitle": "删除API密钥？",
-				"deleteFallbackName": "这个API钥匙",
+				"deleteFallbackName": "此 API 密钥",
 				"deleting": "正在删除...",
 				"empty": "还没有 API 密钥。创建一个以开始使用。",
 				"expiredBadge": "已过期 {{label}}",
@@ -457,7 +457,7 @@
 				"enabled": "Discord 通知已启用",
 				"removed": "Discord 集成删除成功",
 				"removeError": "无法删除 Discord 集成",
-				"saved": "Discord 积分保存成功",
+				"saved": "Discord 集成保存成功",
 				"saveError": "无法保存 Discord 集成",
 				"updateError": "无法更新 Discord 集成"
 			},
@@ -480,7 +480,7 @@
 		"genericWebhookIntegration": {
 			"connect": "连接webhook",
 			"connected": "已连接",
-			"connectionHint": "将任务事件以 JSON 形式发送到你自己的端点。配置机密时，会包含签名的 X-Kaneo-Signature 标头。",
+			"connectionHint": "将任务事件以 JSON 形式发送到你自己的端点。配置密钥时，会包含签名的 X-Kaneo-Signature 标头。",
 			"connectionTitle": "传出 webhook 连接",
 			"disconnect": "断开",
 			"events": {
@@ -495,10 +495,10 @@
 			"eventsTitle": "事件通知",
 			"paused": "已暂停",
 			"saveChanges": "保存更改",
-			"secretHint": "选修的。如果提供，Kaneo 会对请求正文进行签名，并在 X-Kaneo-Signature 标头中发送十六进制摘要。",
+			"secretHint": "可选的。如果提供，Kaneo 会对请求正文进行签名，并在 X-Kaneo-Signature 标头中发送十六进制摘要。",
 			"secretHintConfigured": "签名密钥已配置 ({{secret}})。输入一个新的来替换它。",
-			"secretLabel": "签名秘笈",
-			"secretPlaceholder": "可选的共享秘密",
+			"secretLabel": "签名密钥",
+			"secretPlaceholder": "可选的共享密钥",
 			"toast": {
 				"disabled": "通用 webhook 通知已暂停",
 				"enabled": "启用通用 webhook 通知",
@@ -534,7 +534,7 @@
 			"currentToken": "已存储",
 			"disconnect": "断开",
 			"importDisabledHint": "验证上面的存储库以启用导入",
-			"importing": "输入…",
+			"importing": "导入中…",
 			"importIssues": "导入问题",
 			"importSectionHint": "从存储库导入未解决的问题和拉取请求",
 			"importSectionTitle": "导入 Gitea 问题",
@@ -551,7 +551,7 @@
 			"toast": {
 				"commentOnDisabled": "新问题的任务链接评论已关闭",
 				"commentOnEnabled": "Kaneo 将评论新问题的任务链接",
-				"importError": "导入失败问题",
+				"importError": "问题导入失败",
 				"issuesImported": "问题已成功导入",
 				"removed": "Gitea 集成已移除",
 				"removeError": "无法删除 Gitea 集成",
@@ -561,7 +561,7 @@
 				"tokenRequired": "需要个人访问令牌",
 				"tokenRequiredVerify": "输入令牌进行验证",
 				"unableToCopySecret": "无法复制机密",
-				"updated": "Gitea 积分已保存",
+				"updated": "Gitea 集成已保存",
 				"updateError": "无法保存 Gitea 集成",
 				"verifyError": "验证 Gitea 访问失败",
 				"verifyFirst": "验证访问失败 — 检查 URL、令牌和存储库",
@@ -585,7 +585,7 @@
 			"webhookCopy": "复制",
 			"webhookHide": "隐藏",
 			"webhookHint": "在你的 Gitea 存储库中，添加具有此 URL 和密钥的 webhook。启用推送、拉取请求、问题、问题评论和创建（对于标签）。",
-			"webhookSecretLabel": "秘密（必须与Gitea中的webhook秘密匹配）",
+			"webhookSecretLabel": "密钥（必须与 Gitea 中的 webhook 密钥匹配）",
 			"webhookShow": "展示",
 			"webhookTitle": "网络钩子"
 		},
@@ -604,8 +604,8 @@
 			"connectionStatus": "连接状态",
 			"disconnect": "断开",
 			"importDisabledHint": "完成上面的存储库配置以启用导入",
-			"importing": "输入...",
-			"importIssues": "进口问题",
+			"importing": "导入中…",
+			"importIssues": "导入问题",
 			"importSectionHint": "从 GitHub 存储库导入现有问题作为任务",
 			"importSectionTitle": "导入 GitHub 问题",
 			"installGithubApp": "安装GitHub应用程序",
@@ -625,7 +625,7 @@
 			"toast": {
 				"commentOnDisabled": "新问题的任务链接评论已关闭",
 				"commentOnEnabled": "Kaneo 将评论新问题的任务链接",
-				"importError": "导入失败问题",
+				"importError": "问题导入失败",
 				"installAppFirst": "请先在此存储库上安装 GitHub 应用程序",
 				"installedMissingPerms": "GitHub 应用程序已安装但缺少所需权限",
 				"installedOk": "GitHub App已正确安装！",
@@ -701,7 +701,7 @@
 			"ntfyServerPlaceholder": "https://ntfy.example.com",
 			"ntfyTitle": "ntfy",
 			"ntfyTokenHintConfigured": "令牌已配置 ({{masked}})。输入新的令牌来替换它。",
-			"ntfyTokenHintOptional": "选修的。如果你的 ntfy 服务器需要身份验证，请提供令牌。",
+			"ntfyTokenHintOptional": "可选的。如果你的 ntfy 服务器需要身份验证，请提供令牌。",
 			"ntfyTokenPlaceholder": "可选的不记名令牌",
 			"ntfyTopicPlaceholder": "团队警报",
 			"pageTitle": "通知",
@@ -712,7 +712,7 @@
 			"selectedProjects": "选定的项目",
 			"selectedProjectsDescription": "仅发送来自选定项目的通知。",
 			"serverUrl": "服务器地址",
-			"signingSecret": "签名秘笈",
+			"signingSecret": "签名密钥",
 			"statusConnected": "已连接",
 			"statusPaused": "已暂停",
 			"subtitle": "选择 Kaneo 如何发送你的帐户通知以及使用哪些渠道。",
@@ -745,8 +745,8 @@
 			"webhookChannelHintEnabled": "将匹配的工作区通知发送到你的 webhook。",
 			"webhookDescription": "将帐户通知发送到你自己的端点（JSON）。",
 			"webhookSecretHintConfigured": "签名密钥已配置 ({{masked}})。输入一个新的来替换它。",
-			"webhookSecretHintOptional": "选修的。设置机密后，Kaneo 对请求正文进行签名。",
-			"webhookSecretPlaceholder": "可选的共享秘密",
+			"webhookSecretHintOptional": "可选的。设置密钥后，Kaneo 对请求正文进行签名。",
+			"webhookSecretPlaceholder": "可选的共享密钥",
 			"webhookTitle": "定制webhook",
 			"webhookUrlPlaceholder": "https://example.com/webhooks/Kaneo",
 			"workspaceCardHint": "选择此工作区可用于帐户通知的渠道。",
@@ -888,7 +888,7 @@
 				"enabled": "Slack 通知已启用",
 				"removed": "Slack 集成删除成功",
 				"removeError": "无法删除 Slack 集成",
-				"saved": "Slack 积分保存成功",
+				"saved": "Slack 集成保存成功",
 				"saveError": "无法保存 Slack 集成",
 				"updateError": "无法更新 Slack 集成"
 			},
@@ -947,7 +947,7 @@
 			"eventsTitle": "事件通知",
 			"paused": "已暂停",
 			"saveChanges": "保存更改",
-			"threadIdHint": "选修的。将此用于 Telegram 组内的论坛主题。",
+			"threadIdHint": "可选的。将此用于 Telegram 组内的论坛主题。",
 			"threadIdLabel": "主题线程 ID",
 			"threadIdPlaceholder": "可选主题 ID",
 			"toast": {
@@ -955,7 +955,7 @@
 				"enabled": "Telegram 通知已启用",
 				"removed": "Telegram 集成删除成功",
 				"removeError": "无法删除 Telegram 集成",
-				"saved": "Telegram 积分保存成功",
+				"saved": "Telegram 集成保存成功",
 				"saveError": "无法保存 Telegram 集成",
 				"updateError": "无法更新 Telegram 集成"
 			},
@@ -1012,22 +1012,22 @@
 			"workspaceInfoTitle": "工作区信息"
 		},
 		"workspaceRruleSchedule": {
-			"pageTitle": "R规则任务计划",
+			"pageTitle": "定时任务计划",
 			"readOnlyNote": "只有工作区所有者和管理员才能更改这些设置。",
-			"runAtHint": "所选时区的本地挂钟时间",
+			"runAtHint": "所选时区的本地时间",
 			"runAtLabel": "每日运行时间",
-			"save": "节省",
+			"save": "保存",
 			"saving": "保存…",
-			"scopeNote": "更改仅适用于新的或编辑的 RRule 任务。现有的时间表不会被修改。",
-			"sidebarTitle": "R规则表",
+			"scopeNote": "更改仅适用于新的或编辑的定时任务。现有的时间表不会被修改。",
+			"sidebarTitle": "定时任务",
 			"subtitle": "设置创建重复任务时默认使用的时区和每日运行时间。",
 			"timezoneHint": "重复任务运行时间的 IANA 时区",
 			"timezoneLabel": "时区",
 			"timezoneNoResults": "没有匹配的时区。尝试肯尼亚、内罗毕或非洲/内罗毕。",
 			"timezoneSearchPlaceholder": "按城市或国家搜索（例如肯尼亚、内罗毕）...",
-			"title": "R规则任务计划",
-			"toastUpdated": "R规则计划设置已保存",
-			"toastUpdateError": "无法保存 RRule 计划设置",
+			"title": "定时任务计划",
+			"toastUpdated": "定时任务计划设置已保存",
+			"toastUpdateError": "无法保存定时任务计划设置",
 			"validation": {
 				"hourInvalid": "小时必须介于 0 到 23 之间",
 				"minuteInvalid": "分钟必须介于 0 到 59 之间",
@@ -1041,7 +1041,7 @@
 			"overview": "概览",
 			"projects": "项目",
 			"projectTemplates": "项目模板",
-			"rruleTasks": "循环任务",
+			"rruleTasks": "定时任务",
 			"members": "成员",
 			"invitations": "邀请",
 			"more": "更多",
@@ -1702,14 +1702,14 @@
 	},
 	"projectTemplate": {
 		"actions": {
-			"create": "创造",
-			"save": "节省"
+			"create": "创建",
+			"save": "保存"
 		},
 		"addTask": "添加模板任务",
 		"createProject": {
 			"error": "无法从模板创建项目",
 			"success": "从模板创建的项目",
-			"taskCount": "{{count}} 任务将被复制",
+			"taskCount": "将复制 {{count}} 个任务",
 			"title": "从 {{name}} 创建项目"
 		},
 		"createTask": {
@@ -1728,32 +1728,32 @@
 		"dueDays": {
 			"afterProject": "+{{count}} 天",
 			"afterProjectFull": "项目创建后 {{count}} 天",
-			"apply": "申请",
+			"apply": "应用",
 			"clear": "清除",
 			"daysUnit": "天",
 			"hint": "从该模板创建项目后的天数",
-			"label": "项目结束后到期",
+			"label": "项目创建后到期",
 			"quick": "{{count}}d"
 		},
 		"empty": "还没有模板。创建一个来定义可重用的项目结构。",
 		"pageTitle": "项目模板",
 		"task": {
-			"assignee": "受让人",
+			"assignee": "负责人",
 			"description": "描述",
 			"dueDays": "到期日（项目后天数）",
 			"editTitle": "编辑模板任务",
-			"priority": "优先事项",
-			"properties": "特性",
+			"priority": "优先级",
+			"properties": "属性",
 			"saved": "模板任务已保存",
-			"status": "地位",
+			"status": "状态",
 			"title": "标题"
 		},
 		"useTemplate": "从模板创建项目"
 	},
 	"publicProject": {
-		"badge": "民众",
+		"badge": "公开",
 		"branding": {
-			"poweredBy": "供电"
+			"poweredBy": "由 Kaneo 提供支持"
 		},
 		"copyUrl": {
 			"copied": "已复制",
@@ -1765,7 +1765,7 @@
 			"description": "该项目不存在或不可公开访问。",
 			"title": "未找到项目"
 		},
-		"pageTitle": "公众视野",
+		"pageTitle": "公开视图",
 		"readOnly": "只读",
 		"taskCard": {
 			"viewDetailsAria": "查看任务 {{title}} 的详细信息"
@@ -1779,41 +1779,41 @@
 			"labels": "标签",
 			"prStatusDraft": "草稿",
 			"prStatusMerged": "合并",
-			"prStatusOpen": "打开",
-			"pullRequestFallback": "请求请求"
+			"prStatusOpen": "开放",
+			"pullRequestFallback": "拉取请求"
 		},
 		"theme": {
 			"switchToDark": "切换到深色模式",
-			"switchToLight": "切换到灯光模式"
+			"switchToLight": "切换到浅色模式"
 		}
 	},
 	"rruleTask": {
 		"actions": {
-			"create": "创造",
-			"save": "节省"
+			"create": "创建",
+			"save": "保存"
 		},
-		"addTask": "添加RRule任务",
+		"addTask": "添加定时任务",
 		"createTask": {
-			"title": "添加RRule任务"
+			"title": "添加定时任务"
 		},
 		"dueDays": {
-			"afterOccurrence": "+{{count}} 触发后天数"
+			"afterOccurrence": "触发后 {{count}} 天"
 		},
 		"emptyProjects": "此工作区中还没有项目。",
-		"noTasksInProject": "此项目中没有 RRule 任务。",
-		"pageTitle": "规则任务",
+		"noTasksInProject": "此项目中没有定时任务。",
+		"pageTitle": "定时任务",
 		"rrule": {
 			"label": "重复规则（RRULE）",
 			"placeholder": "开始时间：20260101T090000Z\nRRULE：频率=每日；间隔=1"
 		},
 		"task": {
 			"description": "描述",
-			"editTitle": "编辑规则任务",
+			"editTitle": "编辑定时任务",
 			"nextRunAt": "下一次运行：{{date}}",
-			"priority": "优先事项",
-			"properties": "特性",
-			"saved": "R规则任务已保存",
-			"status": "地位",
+			"priority": "优先级",
+			"properties": "属性",
+			"saved": "定时任务已保存",
+			"status": "状态",
 			"title": "标题"
 		}
 	},
