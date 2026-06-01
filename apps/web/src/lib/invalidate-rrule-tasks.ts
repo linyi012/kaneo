@@ -6,5 +6,6 @@ export function invalidateRruleTasks(
 ) {
   return queryClient.invalidateQueries({
     queryKey: workspaceId ? ["rrule-tasks", workspaceId] : ["rrule-tasks"],
+    refetchType: "all",
   });
 }

@@ -102,6 +102,8 @@ if (-not $tagline) {
 }
 
 $replacements = [ordered]@{
+	# Must run before bare KANEO_APP_NAME (substring of the token below).
+	"@@KANEO_APP_NAME@@" = $appName
 	"KANEO_API_URL" = $api
 	"KANEO_APP_NAME" = $appName
 	"KANEO_APP_TAGLINE" = $tagline
