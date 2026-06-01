@@ -34,15 +34,23 @@ Put the output into `C:\kaneo\.env`:
 AUTH_SECRET=<paste-generated-value-here>
 ```
 
-4. Load env and inject frontend URLs:
+4. Inject frontend configuration from `.env` (URLs and optional branding):
 
 ```powershell
-Get-Content C:\kaneo\.env | ForEach-Object {
-  if ($_ -match '^\s*([^#][^=]+)=(.*)$') {
-    [Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim(), 'Process')
-  }
-}
 C:\kaneo\scripts\inject-env.ps1
+```
+
+The script reads `C:\kaneo\.env` automatically. It replaces placeholders in `web/dist` for:
+
+- `KANEO_API_URL`, `KANEO_CLIENT_URL` (required)
+- `KANEO_APP_NAME`, `KANEO_APP_TAGLINE` (optional; default to Kaneo branding)
+
+Re-run inject after changing `.env` values (no need to export environment variables manually).
+
+Optional custom web root or env file:
+
+```powershell
+C:\kaneo\scripts\inject-env.ps1 -WebRoot C:\kaneo\web\dist -EnvFile C:\kaneo\.env
 ```
 
 5. Start API, then Caddy:
