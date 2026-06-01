@@ -1,1 +1,4 @@
 * text=auto eol=lf
+
+# Windows offline deploy docs must stay UTF-8 (not UTF-16 from Notepad)
+deploy/offline-windows/*.md text eol=lf

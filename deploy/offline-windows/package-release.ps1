@@ -94,7 +94,19 @@ try {
 	Copy-Item apps\web\dist\* "$Root\web\dist\" -Recurse
 	Copy-Item "$ScriptDir\config\*" "$Root\config\"
 	Copy-Item "$ScriptDir\scripts\*" "$Root\scripts\"
-	Copy-Item "$ScriptDir\README.md" "$Root\DEPLOY.md"
+	# UTF-8 (no BOM) for DEPLOY.md (GitHub, editors, and zip consumers expect UTF-8)
+	$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+	$readmePath = Join-Path $ScriptDir "README.md"
+	if (-not (Test-Path $readmePath)) {
+		throw "Missing $readmePath"
+	}
+	$readmeBytes = [System.IO.File]::ReadAllBytes($readmePath)
+	$readmeText = if ($readmeBytes.Length -ge 2 -and $readmeBytes[1] -eq 0) {
+		[System.Text.Encoding]::Unicode.GetString($readmeBytes)
+	} else {
+		$utf8NoBom.GetString($readmeBytes)
+	}
+	[System.IO.File]::WriteAllText((Join-Path $Root "DEPLOY.md"), $readmeText, $utf8NoBom)
 
 	Write-Host "==> Production dependencies (npm; self-contained node_modules)"
 	Push-Location $Root
