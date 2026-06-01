@@ -226,6 +226,7 @@ export const auth = betterAuth({
       },
     }),
     organization({
+      requireEmailVerificationOnInvitation: false,
       // creatorRole: "admin", // maybe will want this "The role of the user who creates the organization."
       // invitationLimit and other fields like this may be beneficial as well
       teams: {
