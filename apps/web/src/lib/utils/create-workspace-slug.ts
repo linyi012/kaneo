@@ -3,7 +3,11 @@ import { createSlug } from "./create-slug";
 const RANDOM_SUFFIX_LENGTH = 12;
 
 export function createWorkspaceBaseSlug(value: string): string {
-  return createSlug(value) || "workspace";
+  const slug = createSlug(value);
+  if (slug) {
+    return slug;
+  }
+  return `workspace-${createRandomSuffix()}`;
 }
 
 function createRandomSuffix(): string {
