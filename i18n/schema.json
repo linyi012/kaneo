@@ -6374,9 +6374,33 @@
 					"properties": {
 						"success": {
 							"type": "string"
+						},
+						"modal": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"description_one": {
+									"type": "string"
+								},
+								"description_other": {
+									"type": "string"
+								},
+								"confirm": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"description_one",
+								"description_other",
+								"confirm"
+							]
 						}
 					},
-					"required": ["success"]
+					"required": ["success", "modal"]
 				},
 				"listView": {
 					"type": "object",

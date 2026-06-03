@@ -1599,7 +1599,13 @@
 			"error": "Не вдалося видалити завдання"
 		},
 		"archive": {
-			"success": "Архівовано {{count}} завдань"
+			"success": "Архівовано {{count}} завдань",
+			"modal": {
+				"confirm": "Confirm",
+				"description_one": "Are you sure you want to archive <count>{{count}}</count> completed task? This will move it from the active board to your archive.",
+				"description_other": "Are you sure you want to archive all <count>{{count}}</count> completed tasks? This will move them from the active board to your archive.",
+				"title": "Archive tasks"
+			}
 		},
 		"listView": {
 			"addTask": "Додати завдання",

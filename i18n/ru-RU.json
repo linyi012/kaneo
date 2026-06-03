@@ -1619,7 +1619,13 @@
 			"success_few": "{{count}} задачи архивированы",
 			"success_many": "{{count}} задач архивировано",
 			"success_other": "{{count}} задач архивировано",
-			"success": "Archived {{count}} tasks"
+			"success": "Archived {{count}} tasks",
+			"modal": {
+				"confirm": "Confirm",
+				"description_one": "Are you sure you want to archive <count>{{count}}</count> completed task? This will move it from the active board to your archive.",
+				"description_other": "Are you sure you want to archive all <count>{{count}}</count> completed tasks? This will move them from the active board to your archive.",
+				"title": "Archive tasks"
+			}
 		},
 		"listView": {
 			"addTask": "Добавить задачу",

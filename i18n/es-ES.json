@@ -1586,7 +1586,13 @@
 			"error": "Error al eliminar la tarea"
 		},
 		"archive": {
-			"success": "Se han archivado {{count}} tareas"
+			"success": "Se han archivado {{count}} tareas",
+			"modal": {
+				"confirm": "Confirm",
+				"description_one": "Are you sure you want to archive <count>{{count}}</count> completed task? This will move it from the active board to your archive.",
+				"description_other": "Are you sure you want to archive all <count>{{count}}</count> completed tasks? This will move them from the active board to your archive.",
+				"title": "Archive tasks"
+			}
 		},
 		"listView": {
 			"addTask": "Añadir tarea",

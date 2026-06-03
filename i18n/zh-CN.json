@@ -1180,7 +1180,13 @@
 			"markAsPlanned": "标记为已规划"
 		},
 		"archive": {
-			"success": "已归档 {{count}} 个任务"
+			"success": "已归档 {{count}} 个任务",
+			"modal": {
+				"title": "归档任务",
+				"description_one": "确定要归档 <count>{{count}}</count> 个已完成任务吗？该任务将从看板移至归档区。",
+				"description_other": "确定要归档全部 <count>{{count}}</count> 个已完成任务吗？这些任务将从看板移至归档区。",
+				"confirm": "确认"
+			}
 		},
 		"assignee": {
 			"label": "负责人",

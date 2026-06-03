@@ -1597,7 +1597,13 @@
 			"error": "Failed to delete task"
 		},
 		"archive": {
-			"success": "Archived {{count}} tasks"
+			"success": "Archived {{count}} tasks",
+			"modal": {
+				"title": "Archive tasks",
+				"description_one": "Are you sure you want to archive <count>{{count}}</count> completed task? This will move it from the active board to your archive.",
+				"description_other": "Are you sure you want to archive all <count>{{count}}</count> completed tasks? This will move them from the active board to your archive.",
+				"confirm": "Confirm"
+			}
 		},
 		"listView": {
 			"addTask": "Add task",
