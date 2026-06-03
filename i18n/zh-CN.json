@@ -1754,7 +1754,18 @@
 			"status": "状态",
 			"title": "标题"
 		},
-		"useTemplate": "从模板创建项目"
+		"useTemplate": "从模板创建项目",
+		"toast": {
+			"taskCreated": "模板任务已创建",
+			"taskCreateFailed": "创建模板任务失败",
+			"taskDeleted": "模板任务已删除",
+			"taskDeleteFailed": "删除模板任务失败",
+			"taskUpdateFailed": "更新模板任务失败",
+			"templateCreated": "模板已创建",
+			"templateCreateFailed": "创建模板失败",
+			"templateDeleted": "模板已删除",
+			"templateDeleteFailed": "删除模板失败"
+		}
 	},
 	"publicProject": {
 		"badge": "公开",
@@ -1821,6 +1832,13 @@
 			"saved": "定时任务已保存",
 			"status": "状态",
 			"title": "标题"
+		},
+		"toast": {
+			"taskCreated": "定时任务已创建",
+			"taskCreateFailed": "创建定时任务失败",
+			"taskDeleted": "定时任务已删除",
+			"taskDeleteFailed": "删除定时任务失败",
+			"taskUpdateFailed": "更新定时任务失败"
 		}
 	},
 	"team": {

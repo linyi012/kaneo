@@ -7470,6 +7470,50 @@
 						}
 					},
 					"required": ["create", "save"]
+				},
+				"toast": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"templateCreated": {
+							"type": "string"
+						},
+						"templateCreateFailed": {
+							"type": "string"
+						},
+						"templateDeleted": {
+							"type": "string"
+						},
+						"templateDeleteFailed": {
+							"type": "string"
+						},
+						"taskCreated": {
+							"type": "string"
+						},
+						"taskCreateFailed": {
+							"type": "string"
+						},
+						"taskDeleted": {
+							"type": "string"
+						},
+						"taskDeleteFailed": {
+							"type": "string"
+						},
+						"taskUpdateFailed": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"templateCreated",
+						"templateCreateFailed",
+						"templateDeleted",
+						"templateDeleteFailed",
+						"taskCreated",
+						"taskCreateFailed",
+						"taskDeleted",
+						"taskDeleteFailed",
+						"taskUpdateFailed"
+					]
 				}
 			},
 			"required": [
@@ -7484,7 +7528,8 @@
 				"deleteTemplateConfirm",
 				"dueDays",
 				"task",
-				"actions"
+				"actions",
+				"toast"
 			]
 		},
 		"rruleTask": {
@@ -7588,6 +7633,34 @@
 						}
 					},
 					"required": ["create", "save"]
+				},
+				"toast": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"taskCreated": {
+							"type": "string"
+						},
+						"taskCreateFailed": {
+							"type": "string"
+						},
+						"taskDeleted": {
+							"type": "string"
+						},
+						"taskDeleteFailed": {
+							"type": "string"
+						},
+						"taskUpdateFailed": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"taskCreated",
+						"taskCreateFailed",
+						"taskDeleted",
+						"taskDeleteFailed",
+						"taskUpdateFailed"
+					]
 				}
 			},
 			"required": [
@@ -7599,7 +7672,8 @@
 				"rrule",
 				"dueDays",
 				"task",
-				"actions"
+				"actions",
+				"toast"
 			]
 		}
 	},

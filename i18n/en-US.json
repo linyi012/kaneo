@@ -1882,6 +1882,17 @@
 		"actions": {
 			"create": "Create",
 			"save": "Save"
+		},
+		"toast": {
+			"templateCreated": "Template created",
+			"templateCreateFailed": "Failed to create template",
+			"templateDeleted": "Template deleted",
+			"templateDeleteFailed": "Failed to delete template",
+			"taskCreated": "Template task created",
+			"taskCreateFailed": "Failed to create template task",
+			"taskDeleted": "Template task deleted",
+			"taskDeleteFailed": "Failed to delete template task",
+			"taskUpdateFailed": "Failed to update template task"
 		}
 	},
 	"rruleTask": {
@@ -1912,6 +1923,13 @@
 		"actions": {
 			"create": "Create",
 			"save": "Save"
+		},
+		"toast": {
+			"taskCreated": "RRule task created",
+			"taskCreateFailed": "Failed to create RRule task",
+			"taskDeleted": "RRule task deleted",
+			"taskDeleteFailed": "Failed to delete RRule task",
+			"taskUpdateFailed": "Failed to update RRule task"
 		}
 	}
 }
