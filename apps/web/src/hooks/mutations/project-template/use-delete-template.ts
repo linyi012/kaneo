@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import i18n from "i18next";
 import deleteTemplate from "@/fetchers/project-template/delete-template";
 import { toast } from "@/lib/toast";
 
@@ -11,11 +12,13 @@ export function useDeleteTemplate(workspaceId: string) {
       queryClient.invalidateQueries({
         queryKey: ["project-templates", workspaceId],
       });
-      toast.success("Template deleted");
+      toast.success(i18n.t("projectTemplate:toast.templateDeleted"));
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error ? error.message : "Failed to delete template",
+        error instanceof Error
+          ? error.message
+          : i18n.t("projectTemplate:toast.templateDeleteFailed"),
       );
     },
   });

@@ -1180,7 +1180,13 @@
 			"markAsPlanned": "标记为已规划"
 		},
 		"archive": {
-			"success": "已归档 {{count}} 个任务"
+			"success": "已归档 {{count}} 个任务",
+			"modal": {
+				"title": "归档任务",
+				"description_one": "确定要归档 <count>{{count}}</count> 个已完成任务吗？该任务将从看板移至归档区。",
+				"description_other": "确定要归档全部 <count>{{count}}</count> 个已完成任务吗？这些任务将从看板移至归档区。",
+				"confirm": "确认"
+			}
 		},
 		"assignee": {
 			"label": "负责人",
@@ -1748,7 +1754,18 @@
 			"status": "状态",
 			"title": "标题"
 		},
-		"useTemplate": "从模板创建项目"
+		"useTemplate": "从模板创建项目",
+		"toast": {
+			"taskCreated": "模板任务已创建",
+			"taskCreateFailed": "创建模板任务失败",
+			"taskDeleted": "模板任务已删除",
+			"taskDeleteFailed": "删除模板任务失败",
+			"taskUpdateFailed": "更新模板任务失败",
+			"templateCreated": "模板已创建",
+			"templateCreateFailed": "创建模板失败",
+			"templateDeleted": "模板已删除",
+			"templateDeleteFailed": "删除模板失败"
+		}
 	},
 	"publicProject": {
 		"badge": "公开",
@@ -1815,6 +1832,13 @@
 			"saved": "定时任务已保存",
 			"status": "状态",
 			"title": "标题"
+		},
+		"toast": {
+			"taskCreated": "定时任务已创建",
+			"taskCreateFailed": "创建定时任务失败",
+			"taskDeleted": "定时任务已删除",
+			"taskDeleteFailed": "删除定时任务失败",
+			"taskUpdateFailed": "更新定时任务失败"
 		}
 	},
 	"team": {

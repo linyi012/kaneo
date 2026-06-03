@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import i18n from "i18next";
 import deleteRruleTask from "@/fetchers/rrule-task/delete-rrule-task";
 import { toast } from "@/lib/toast";
 
@@ -11,11 +12,13 @@ export function useDeleteRruleTask(workspaceId: string) {
       queryClient.invalidateQueries({
         queryKey: ["rrule-tasks", workspaceId],
       });
-      toast.success("RRule task deleted");
+      toast.success(i18n.t("rruleTask:toast.taskDeleted"));
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error ? error.message : "Failed to delete RRule task",
+        error instanceof Error
+          ? error.message
+          : i18n.t("rruleTask:toast.taskDeleteFailed"),
       );
     },
   });

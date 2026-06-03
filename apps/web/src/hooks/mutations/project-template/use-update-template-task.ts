@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import i18n from "i18next";
 import updateTemplateTask from "@/fetchers/project-template/update-template-task";
 import { toast } from "@/lib/toast";
 import type { ProjectTemplateTask } from "@/types/project-template";
@@ -26,7 +27,7 @@ export function useUpdateTemplateTask(workspaceId: string) {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to update template task",
+          : i18n.t("projectTemplate:toast.taskUpdateFailed"),
       );
     },
   });

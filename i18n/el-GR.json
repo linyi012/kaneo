@@ -1597,7 +1597,13 @@
 			"error": "Αποτυχία διαγραφής εργασίας"
 		},
 		"archive": {
-			"success": "Αρχειοθετήθηκαν {{count}} εργασίες"
+			"success": "Αρχειοθετήθηκαν {{count}} εργασίες",
+			"modal": {
+				"confirm": "Confirm",
+				"description_one": "Are you sure you want to archive <count>{{count}}</count> completed task? This will move it from the active board to your archive.",
+				"description_other": "Are you sure you want to archive all <count>{{count}}</count> completed tasks? This will move them from the active board to your archive.",
+				"title": "Archive tasks"
+			}
 		},
 		"listView": {
 			"addTask": "Προσθήκη εργασίας",
@@ -1876,7 +1882,18 @@
 			"status": "Status",
 			"title": "Title"
 		},
-		"useTemplate": "Create project from template"
+		"useTemplate": "Create project from template",
+		"toast": {
+			"taskCreated": "Template task created",
+			"taskCreateFailed": "Failed to create template task",
+			"taskDeleted": "Template task deleted",
+			"taskDeleteFailed": "Failed to delete template task",
+			"taskUpdateFailed": "Failed to update template task",
+			"templateCreated": "Template created",
+			"templateCreateFailed": "Failed to create template",
+			"templateDeleted": "Template deleted",
+			"templateDeleteFailed": "Failed to delete template"
+		}
 	},
 	"rruleTask": {
 		"actions": {
@@ -1906,6 +1923,13 @@
 			"saved": "RRule task saved",
 			"status": "Status",
 			"title": "Title"
+		},
+		"toast": {
+			"taskCreated": "RRule task created",
+			"taskCreateFailed": "Failed to create RRule task",
+			"taskDeleted": "RRule task deleted",
+			"taskDeleteFailed": "Failed to delete RRule task",
+			"taskUpdateFailed": "Failed to update RRule task"
 		}
 	}
 }

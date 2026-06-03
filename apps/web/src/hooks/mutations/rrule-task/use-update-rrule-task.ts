@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import i18n from "i18next";
 import updateRruleTask from "@/fetchers/rrule-task/update-rrule-task";
 import { toast } from "@/lib/toast";
 
@@ -20,11 +21,12 @@ export function useUpdateRruleTask(workspaceId: string) {
       queryClient.invalidateQueries({
         queryKey: ["rrule-task", variables.id],
       });
-      toast.success("RRule task saved");
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error ? error.message : "Failed to update RRule task",
+        error instanceof Error
+          ? error.message
+          : i18n.t("rruleTask:toast.taskUpdateFailed"),
       );
     },
   });
