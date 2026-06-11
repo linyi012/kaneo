@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
@@ -137,11 +138,14 @@ export default function CreateTemplateTaskModal({
               className="min-h-[160px] resize-y"
             />
 
-            <TemplateTaskLabelsEditor
-              workspaceId={workspaceId}
-              labels={labels}
-              onChange={setLabels}
-            />
+            <Field>
+              <FieldLabel>{t("common:modals.createTask.labels")}</FieldLabel>
+              <TemplateTaskLabelsEditor
+                workspaceId={workspaceId}
+                labels={labels}
+                onChange={setLabels}
+              />
+            </Field>
 
             <div className="flex flex-wrap items-center gap-2 py-2">
               <Popover>

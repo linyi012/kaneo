@@ -1,5 +1,5 @@
 import { parseWorkspaceRruleSchedule } from "@kaneo/libs";
-import { X } from "lucide-react";
+import { Check } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TemplateDueDaysPopover from "@/components/project-template/template-due-days-popover";
@@ -7,21 +7,28 @@ import TemplateTaskAssigneePopover from "@/components/project-template/template-
 import type { TemplateTaskLabel } from "@/components/project-template/template-task-label";
 import TemplateTaskLabelsEditor from "@/components/project-template/template-task-labels-editor";
 import { Button } from "@/components/ui/button";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Sheet,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetPanel,
+  SheetPopup,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { useDeleteRruleTask } from "@/hooks/mutations/rrule-task/use-delete-rrule-task";
 import { useUpdateRruleTask } from "@/hooks/mutations/rrule-task/use-update-rrule-task";
 import { useRruleTask } from "@/hooks/queries/rrule-task/use-rrule-task";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/cn";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
@@ -69,6 +76,18 @@ export default function RruleTaskSheet({
   const [dueDaysOffset, setDueDaysOffset] = useState<number | null>(null);
   const [rrule, setRrule] = useState("");
   const [labels, setLabels] = useState<TemplateTaskLabel[]>([]);
+
+  const priorityOptions = useMemo(
+    () =>
+      PRIORITIES.map((value) => ({
+        value,
+        label: getPriorityLabel(value),
+      })),
+    [],
+  );
+
+  const selectedPriority = priorityOptions.find((p) => p.value === priority);
+  const statusLabel = t(`tasks:status.${status}`, { defaultValue: status });
 
   useEffect(() => {
     if (!task) return;
@@ -121,55 +140,53 @@ export default function RruleTaskSheet({
 
   return (
     <Sheet open={!!taskId} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent
+      <SheetPopup
         side="right"
-        className="w-full max-w-full sm:max-w-lg md:max-w-2xl p-0 gap-0 [&>button]:hidden"
+        className="max-w-2xl w-full sm:w-[calc(100%-(--spacing(12)))]"
+        showCloseButton={false}
       >
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-background shrink-0">
-          <span className="text-sm font-medium text-muted-foreground">
+        <SheetHeader className="border-b border-border py-4">
+          <SheetTitle className="text-sm font-medium">
             {t("rruleTask:task.editTitle")}
-          </span>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <X className="size-4" />
-          </Button>
-        </div>
+          </SheetTitle>
+          <SheetDescription className="sr-only">
+            {t("rruleTask:task.editTitle")}
+          </SheetDescription>
+        </SheetHeader>
 
-        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto p-4 gap-4">
-          {isLoading || !task ? (
+        {isLoading || !task ? (
+          <SheetPanel>
             <p className="text-sm text-muted-foreground">
               {t("tasks:common.loadingTask")}
             </p>
-          ) : (
-            <>
-              <div className="space-y-2">
-                <Label
-                  htmlFor="rrule-task-title"
-                  className="text-xs font-medium text-muted-foreground"
-                >
-                  {t("rruleTask:task.title")}
-                </Label>
-                <Input
-                  id="rrule-task-title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
+          </SheetPanel>
+        ) : (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void handleSave();
+            }}
+            className="flex min-h-0 flex-1 flex-col"
+          >
+            <SheetPanel className="flex flex-col gap-6">
+              <Input
+                unstyled
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder={t("common:modals.createTask.taskTitlePlaceholder")}
+                className="w-full [&_[data-slot=input]]:h-auto [&_[data-slot=input]]:px-0 [&_[data-slot=input]]:py-1 [&_[data-slot=input]]:text-2xl [&_[data-slot=input]]:leading-tight [&_[data-slot=input]]:font-semibold [&_[data-slot=input]]:tracking-tight [&_[data-slot=input]]:text-foreground [&_[data-slot=input]]:placeholder:text-muted-foreground [&_[data-slot=input]]:outline-none"
+                required
+              />
 
-              <div className="space-y-2">
-                <Label
-                  htmlFor="rrule-task-description"
-                  className="text-xs font-medium text-muted-foreground"
-                >
-                  {t("rruleTask:task.description")}
-                </Label>
-                <Textarea
-                  id="rrule-task-description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={6}
-                  className="min-h-[100px]"
-                />
-              </div>
+              <Textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder={t(
+                  "common:modals.createTask.descriptionPlaceholder",
+                )}
+                rows={4}
+                className="min-h-[100px] resize-y"
+              />
 
               <RRuleBuilder
                 key={task.id}
@@ -178,110 +195,132 @@ export default function RruleTaskSheet({
                 schedule={schedule}
               />
 
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground">
-                  {t("rruleTask:task.properties")}
-                </Label>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] text-muted-foreground">
-                      {t("rruleTask:task.status")}
-                    </span>
-                    <Select value={status} onValueChange={setStatus}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {TEMPLATE_STATUSES.map((s) => (
-                          <SelectItem key={s} value={s}>
-                            {t(`tasks:status.${s}`, { defaultValue: s })}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] text-muted-foreground">
-                      {t("rruleTask:task.priority")}
-                    </span>
-                    <Select value={priority} onValueChange={setPriority}>
-                      <SelectTrigger>
-                        <SelectValue>
-                          <span className="flex items-center gap-2">
-                            {getPriorityIcon(priority)}
-                            {getPriorityLabel(priority)}
-                          </span>
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {PRIORITIES.map((p) => (
-                          <SelectItem key={p} value={p}>
-                            <span className="flex items-center gap-2">
-                              {getPriorityIcon(p)}
-                              {getPriorityLabel(p)}
-                            </span>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <TemplateTaskAssigneePopover
-                    workspaceId={workspaceId}
-                    assigneeId={assigneeId}
-                    onChange={setAssigneeId}
-                  />
-                  <TemplateDueDaysPopover
-                    dueDaysOffset={dueDaysOffset}
-                    onChange={setDueDaysOffset}
-                  />
-                </div>
-                {task.nextRunAt && (
-                  <p className="text-[10px] text-muted-foreground pt-1">
-                    {t("rruleTask:task.nextRunAt", {
-                      date: new Date(task.nextRunAt).toLocaleString(),
-                    })}
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground">
-                  {t("common:modals.createTask.labels")}
-                </Label>
+              <Field>
+                <FieldLabel>{t("common:modals.createTask.labels")}</FieldLabel>
                 <TemplateTaskLabelsEditor
                   workspaceId={workspaceId}
                   labels={labels}
                   onChange={setLabels}
                 />
+              </Field>
+
+              <div className="flex flex-wrap items-center gap-2 py-1">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1.5 rounded-md border border-border bg-accent/50 px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-accent/60"
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-foreground" />
+                      {statusLabel}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-48 p-1" align="start">
+                    {TEMPLATE_STATUSES.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className="flex h-8 w-full items-center gap-2 px-2 py-1.5 text-left text-sm hover:bg-accent/50"
+                        onClick={() => setStatus(s)}
+                      >
+                        <span>
+                          {t(`tasks:status.${s}`, { defaultValue: s })}
+                        </span>
+                        {status === s && <Check className="ml-auto h-4 w-4" />}
+                      </button>
+                    ))}
+                  </PopoverContent>
+                </Popover>
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      className={cn(
+                        "flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-accent/50",
+                        priority !== "no-priority"
+                          ? "bg-accent/30 text-foreground"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      {getPriorityIcon(priority)}
+                      <span>
+                        {selectedPriority?.label ??
+                          t("common:modals.createTask.priority")}
+                      </span>
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-48 p-1" align="start">
+                    <div className="space-y-1">
+                      {priorityOptions.map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          className="flex h-8 w-full items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors hover:bg-accent/50"
+                          onClick={() => setPriority(option.value)}
+                        >
+                          {getPriorityIcon(option.value)}
+                          <span className="text-sm">{option.label}</span>
+                          {priority === option.value && (
+                            <Check className="ml-auto h-4 w-4" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+
+                <TemplateTaskAssigneePopover
+                  workspaceId={workspaceId}
+                  assigneeId={assigneeId}
+                  onChange={setAssigneeId}
+                />
+
+                <TemplateDueDaysPopover
+                  dueDaysOffset={dueDaysOffset}
+                  onChange={setDueDaysOffset}
+                />
               </div>
 
-              <div className="flex items-center justify-between gap-2 pt-2">
+              {task.nextRunAt && (
+                <p className="text-xs text-muted-foreground">
+                  {t("rruleTask:task.nextRunAt", {
+                    date: new Date(task.nextRunAt).toLocaleString(),
+                  })}
+                </p>
+              )}
+            </SheetPanel>
+
+            <SheetFooter className="flex-row items-center justify-between border-t border-border bg-background sm:justify-between">
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={() => void handleDelete()}
+              >
+                {t("tasks:delete.action")}
+              </Button>
+              <div className="flex gap-2">
                 <Button
-                  variant="destructive"
+                  type="button"
+                  variant="outline"
                   size="sm"
-                  onClick={() => void handleDelete()}
+                  onClick={onClose}
                 >
-                  {t("tasks:delete.action")}
+                  {t("common:actions.cancel")}
                 </Button>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={onClose}>
-                    {t("common:actions.cancel")}
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => void handleSave()}
-                    disabled={isPending || !title.trim() || !rrule.trim()}
-                  >
-                    {t("rruleTask:actions.save")}
-                  </Button>
-                </div>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={isPending || !title.trim() || !rrule.trim()}
+                >
+                  {t("rruleTask:actions.save")}
+                </Button>
               </div>
-            </>
-          )}
-        </div>
-      </SheetContent>
+            </SheetFooter>
+          </form>
+        )}
+      </SheetPopup>
     </Sheet>
   );
 }
